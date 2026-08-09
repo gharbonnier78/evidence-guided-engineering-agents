@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/evidence-card.schema.json",
+  "title": "Evidence Card",
+  "type": "object",
+  "required": ["evidence_id", "source", "observed_at", "classification", "content_digest"],
+  "properties": {
+    "evidence_id": {"type": "string"},
+    "source": {
+      "type": "object",
+      "required": ["type", "reference", "version"],
+      "properties": {
+        "type": {"type": "string"},
+        "reference": {"type": "string"},
+        "version": {"type": "string"},
+        "accessed_at": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "observed_at": {"type": "string", "format": "date-time"},
+    "classification": {"type": "string"},
+    "authorized_purpose": {"type": "string"},
+    "content_digest": {"type": "string"},
+    "quality": {
+      "type": "object",
+      "properties": {
+        "relevance": {"enum": ["low", "medium", "high", "unknown"]},
+        "credibility": {"enum": ["low", "medium", "high", "unknown"]},
+        "representativity": {"enum": ["low", "medium", "high", "unknown"]},
+        "freshness": {"enum": ["low", "medium", "high", "unknown"]},
+        "reproducibility": {"enum": ["low", "medium", "high", "unknown"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
+
