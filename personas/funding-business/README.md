@@ -27,3 +27,7 @@ Each recommendation should identify:
 - continue, revise, scale, or stop thresholds;
 - opportunity cost versus competing options;
 - accountable sponsor and financial reviewer.
+
+## Removal test
+
+Each role is justified only if it changes a funding or investment decision, or the confidence behind one, beyond what the sponsor and financial reviewer would have produced unaided. If a role only restates assumptions already visible in the standard business-case template, remove it rather than keep it as a formatting layer.

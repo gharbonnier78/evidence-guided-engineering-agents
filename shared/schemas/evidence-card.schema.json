@@ -21,6 +21,23 @@
     "classification": {"type": "string"},
     "authorized_purpose": {"type": "string"},
     "content_digest": {"type": "string"},
+    "produced_by": {
+      "type": "object",
+      "description": "Automated provenance. Omit only when the card was neither generated nor assessed by an automated system.",
+      "properties": {
+        "agent_role": {"type": "string"},
+        "agent_version": {"type": "string"},
+        "model_version": {"type": "string"},
+        "tool_versions": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "prompt_or_policy_ref": {"type": "string"}
+      },
+      "required": ["agent_role", "agent_version", "model_version", "tool_versions", "prompt_or_policy_ref"],
+      "additionalProperties": false
+    },
     "quality": {
       "type": "object",
       "properties": {
@@ -35,4 +52,3 @@
   },
   "additionalProperties": false
 }
-

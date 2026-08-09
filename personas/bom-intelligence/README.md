@@ -41,3 +41,6 @@ flowchart TD
 
 Stop and escalate when requirements are contradictory, the sizing domain is outside the calculator's validated range, source versions cannot be resolved, telemetry use lacks authorization, or the proposed IaC diverges from the approved BOM.
 
+## Removal test
+
+This persona family is justified only if it improves BOM traceability, defect detection, or dependency completeness beyond what the existing sizing workbook and manual review already achieve. If a bounded comparison shows no material improvement over the current human workflow, remove it rather than keep it as a wrapper around the calculator.

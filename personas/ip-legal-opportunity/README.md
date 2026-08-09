@@ -39,3 +39,6 @@ The agent may prepare this message but cannot send it automatically:
 
 The exact recipient, files, fields, purpose, and confidentiality status must be confirmed by a human.
 
+## Removal test
+
+Each role in this family is justified only if it surfaces candidates, prior art, or legal risks that the existing invention-capture and legal-review process would not have found, or finds them materially faster without raising the false-positive burden on reviewers. A role that only reformats what a human would already have flagged should be merged or removed.
