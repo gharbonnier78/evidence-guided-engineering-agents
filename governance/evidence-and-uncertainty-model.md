@@ -26,9 +26,9 @@ The state is contextual and time-bound, never universal proof.
 
 Do not use “variance” as a generic synonym for uncertainty. Report at least:
 
-\[
+$$
 U = U_{data} + U_{model} + U_{context} + U_{source\ gaps} + U_{disagreement}
-\]
+$$
 
 These terms need not be numerically additive; the expression is a checklist of distinct origins.
 
@@ -37,4 +37,3 @@ Use probabilities only when the estimation process can be explained and calibrat
 ## Updating beliefs
 
 New evidence must append a new assessment or supersede an earlier one explicitly. Never overwrite an inconvenient historical conclusion. Preserve what was believed, why, by whom, and what changed.
-

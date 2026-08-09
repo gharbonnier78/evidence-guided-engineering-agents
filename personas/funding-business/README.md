@@ -12,9 +12,9 @@
 
 The output is not a persuasive static document. It is a versioned model of claims:
 
-\[
+$$
 X = (C_{build}, C_{run}, T_{delivery}, P_{adoption}, R_{unit}, P_{approval})
-\]
+$$
 
 When justified, scenarios or Monte Carlo simulation may estimate distributions for value, cash exposure, payback, and schedule. The agent must publish assumptions, dependencies, correlations, and sensitivity—not only a central ROI.
 
@@ -27,4 +27,3 @@ Each recommendation should identify:
 - continue, revise, scale, or stop thresholds;
 - opportunity cost versus competing options;
 - accountable sponsor and financial reviewer.
-

@@ -57,11 +57,11 @@ These are roles in a decision process, not artificial executives. They may retri
 
 ## Common decision chain
 
-\[
+$$
 \text{source} \rightarrow \text{signal} \rightarrow \text{claim} \rightarrow
 \text{challenge} \rightarrow \text{evidence} \rightarrow \text{uncertainty} \rightarrow
 \text{human decision} \rightarrow \text{outcome/replay}
-\]
+$$
 
 ## Safety and confidentiality
 
@@ -70,4 +70,3 @@ Do not place confidential inventions, personal data, customer data, credentials,
 ## Current phase
 
 The first milestone is not a large autonomous platform. It is a small, replayable experiment comparing a governed agent-assisted workflow with an existing human workflow on synthetic or already-public cases.
-
