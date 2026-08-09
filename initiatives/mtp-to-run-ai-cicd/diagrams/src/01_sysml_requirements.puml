@@ -1,0 +1,38 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor #FCFCFA
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam rectangle {
+  BackgroundColor #F6F8FA
+  BorderColor #334155
+  FontColor #172033
+  RoundCorner 8
+}
+title SysML Requirements View — MTP-to-Run Pilot
+
+rectangle "«requirement»\nR0 Governed Digital Thread\n\nTrace approved engineering intent to\nconfiguration, evidence and learning." as R0 #DCEBFA
+
+rectangle "«requirement»\nR1 Semantic Integrity\n\nPreserve requirement, recommendation,\ndecision, assumption and observation types." as R1
+rectangle "«requirement»\nR2 Reproducible Configuration\n\nLink BOM family, IaC, tests and environment\nthrough versioned identifiers and digests." as R2
+rectangle "«requirement»\nR3 Evidence Completeness\n\nCorrelate result, OTEL signals, provenance,\npreconditions and deviations." as R3
+rectangle "«requirement»\nR4 Human Authority\n\nAI may propose and prepare; accountable\nhumans approve risk and material actions." as R4
+rectangle "«requirement»\nR5 Controlled Learning\n\nNo telemetry reuse or rule update without\npurpose-bound and accountable approval." as R5
+
+rectangle "«deriveReqt»\nD1 Solution Manifest" as D1 #E8F3E8
+rectangle "«deriveReqt»\nD2 Gate Catalogue" as D2 #E8F3E8
+rectangle "«deriveReqt»\nD3 Evidence Envelope" as D3 #E8F3E8
+rectangle "«deriveReqt»\nD4 Data Release Manifest" as D4 #E8F3E8
+
+R0 -down-> R1 : «contain»
+R0 -down-> R2 : «contain»
+R0 -down-> R3 : «contain»
+R0 -down-> R4 : «contain»
+R0 -down-> R5 : «contain»
+R1 ..> D1 : «deriveReqt»
+R2 ..> D1 : «deriveReqt»
+R3 ..> D3 : «deriveReqt»
+R4 ..> D2 : «deriveReqt»
+R5 ..> D4 : «deriveReqt»
+R5 ..> D2 : «deriveReqt»
+@enduml

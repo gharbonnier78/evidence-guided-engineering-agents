@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  id="Definitions_MTPToRun" targetNamespace="https://engineering.example/mtp-to-run">
+  <bpmn:process id="Process_MTPToLearning" name="MTP to Governed Learning" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_Inputs" name="Engineering Inputs">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SelectInputs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Classify</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Platform" name="Assistant and Engineering Platform">
+        <bpmn:flowNodeRef>Task_Manifest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_BOM</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Generate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Check</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_HumanGates" name="Architecture, Industrial, Platform, Cyber and Test">
+        <bpmn:flowNodeRef>Gateway_G2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_G34</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Reject</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Runtime" name="CI/CD and Testbed">
+        <bpmn:flowNodeRef>Task_Deploy</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Evidence</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Decision" name="Test Authority and Data/Expert Governance">
+        <bpmn:flowNodeRef>Gateway_G6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Dossier</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_G8</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Learning</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_G9</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Update</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_1</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+
+    <bpmn:startEvent id="StartEvent_1" name="Pilot candidate selected"/>
+    <bpmn:task id="Task_SelectInputs" name="Select approved MTP, constraints and sizing baseline"/>
+    <bpmn:task id="Task_Classify" name="Classify semantic status and assumptions"/>
+    <bpmn:task id="Task_Manifest" name="Create candidate Solution Manifest"/>
+    <bpmn:task id="Task_BOM" name="Resolve BOM alternatives and evidence obligations"/>
+    <bpmn:exclusiveGateway id="Gateway_G2" name="G2 BOM and architecture accepted?"/>
+    <bpmn:task id="Task_Generate" name="Generate IaC, tests and documentation draft"/>
+    <bpmn:task id="Task_Check" name="Run deterministic plan, policy and supply-chain checks"/>
+    <bpmn:exclusiveGateway id="Gateway_G34" name="G3/G4 passed?"/>
+    <bpmn:task id="Task_Reject" name="Reject or request revision"/>
+    <bpmn:task id="Task_Deploy" name="Deploy and test in isolated testbed"/>
+    <bpmn:task id="Task_Evidence" name="Capture OTEL-linked evidence and rollback"/>
+    <bpmn:exclusiveGateway id="Gateway_G6" name="G6 evidence complete?"/>
+    <bpmn:task id="Task_Dossier" name="Prepare accountable decision dossier"/>
+    <bpmn:exclusiveGateway id="Gateway_G8" name="G8 telemetry lot approved?"/>
+    <bpmn:task id="Task_Learning" name="Prepare learning proposal"/>
+    <bpmn:exclusiveGateway id="Gateway_G9" name="G9 expert update approved?"/>
+    <bpmn:task id="Task_Update" name="Version approved rule or template"/>
+    <bpmn:endEvent id="EndEvent_1" name="Decision and evidence recorded"/>
+
+    <bpmn:sequenceFlow id="F1" sourceRef="StartEvent_1" targetRef="Task_SelectInputs"/>
+    <bpmn:sequenceFlow id="F2" sourceRef="Task_SelectInputs" targetRef="Task_Classify"/>
+    <bpmn:sequenceFlow id="F3" sourceRef="Task_Classify" targetRef="Task_Manifest"/>
+    <bpmn:sequenceFlow id="F4" sourceRef="Task_Manifest" targetRef="Task_BOM"/>
+    <bpmn:sequenceFlow id="F5" sourceRef="Task_BOM" targetRef="Gateway_G2"/>
+    <bpmn:sequenceFlow id="F6_yes" name="Yes" sourceRef="Gateway_G2" targetRef="Task_Generate"/>
+    <bpmn:sequenceFlow id="F6_no" name="No" sourceRef="Gateway_G2" targetRef="Task_Reject"/>
+    <bpmn:sequenceFlow id="F7" sourceRef="Task_Generate" targetRef="Task_Check"/>
+    <bpmn:sequenceFlow id="F8" sourceRef="Task_Check" targetRef="Gateway_G34"/>
+    <bpmn:sequenceFlow id="F9_yes" name="Yes" sourceRef="Gateway_G34" targetRef="Task_Deploy"/>
+    <bpmn:sequenceFlow id="F9_no" name="No" sourceRef="Gateway_G34" targetRef="Task_Reject"/>
+    <bpmn:sequenceFlow id="F10" sourceRef="Task_Deploy" targetRef="Task_Evidence"/>
+    <bpmn:sequenceFlow id="F11" sourceRef="Task_Evidence" targetRef="Gateway_G6"/>
+    <bpmn:sequenceFlow id="F12_yes" name="Yes" sourceRef="Gateway_G6" targetRef="Task_Dossier"/>
+    <bpmn:sequenceFlow id="F12_no" name="No - record gap" sourceRef="Gateway_G6" targetRef="Task_Dossier"/>
+    <bpmn:sequenceFlow id="F13" sourceRef="Task_Dossier" targetRef="Gateway_G8"/>
+    <bpmn:sequenceFlow id="F14_yes" name="Yes" sourceRef="Gateway_G8" targetRef="Task_Learning"/>
+    <bpmn:sequenceFlow id="F14_no" name="No / not applicable" sourceRef="Gateway_G8" targetRef="EndEvent_1"/>
+    <bpmn:sequenceFlow id="F15" sourceRef="Task_Learning" targetRef="Gateway_G9"/>
+    <bpmn:sequenceFlow id="F16_yes" name="Yes" sourceRef="Gateway_G9" targetRef="Task_Update"/>
+    <bpmn:sequenceFlow id="F16_no" name="No" sourceRef="Gateway_G9" targetRef="EndEvent_1"/>
+    <bpmn:sequenceFlow id="F17" sourceRef="Task_Update" targetRef="EndEvent_1"/>
+    <bpmn:sequenceFlow id="F18" sourceRef="Task_Reject" targetRef="EndEvent_1"/>
+  </bpmn:process>
+</bpmn:definitions>

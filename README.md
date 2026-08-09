@@ -53,6 +53,7 @@ These are roles in a decision process, not artificial executives. They may retri
 - [`personas/`](personas/) — domain persona specifications.
 - [`shared/schemas/`](shared/schemas/) — machine-readable evidence, opportunity, and decision records.
 - [`experiments/`](experiments/) — synthetic, falsifiable demonstration plans.
+- [`initiatives/mtp-to-run-ai-cicd/`](initiatives/mtp-to-run-ai-cicd/) — bounded MTP-to-BOM-to-IaC working-group proposal and 90-day pilot package.
 - [`vendor-landscape/`](vendor-landscape/) — build/buy/integrate assessment method.
 
 ## Common decision chain

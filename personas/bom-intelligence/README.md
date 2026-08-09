@@ -37,6 +37,18 @@ flowchart TD
 - test obligations and expected observability signals;
 - learning proposal comparing predicted and observed operation.
 
+## Reference initiative
+
+The [`MTP-to-Run initiative`](../../initiatives/mtp-to-run-ai-cicd/) exercises this persona against a concrete digital thread:
+
+$$
+\text{MTP recommendation} \rightarrow \text{Solution Manifest} \rightarrow
+\text{BOM family} \rightarrow \text{reviewed IaC} \rightarrow
+\text{testbed evidence} \rightarrow \text{approved learning proposal}
+$$
+
+The initiative remains a proposal and demonstrator. It does not broaden this persona's authority or make generated infrastructure executable without the configured expert and human gates.
+
 ## Stop conditions
 
 Stop and escalate when requirements are contradictory, the sizing domain is outside the calculator's validated range, source versions cannot be resolved, telemetry use lacks authorization, or the proposed IaC diverges from the approved BOM.

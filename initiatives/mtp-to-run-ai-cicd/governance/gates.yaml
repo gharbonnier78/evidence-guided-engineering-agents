@@ -1,0 +1,107 @@
+apiVersion: engineering-governance.example/v0alpha1
+kind: GateCatalogue
+metadata:
+  id: mtp-to-run-pilot-gates
+  version: 0.1.0
+  status: discussion-draft
+
+dispositions:
+  - PASS
+  - CONDITIONAL_PASS
+  - FAIL
+  - NOT_APPLICABLE
+
+requiredDispositionFields:
+  - gateId
+  - status
+  - rationale
+  - evidenceRefs
+  - accountableRole
+  - decidedAt
+  - expiry
+  - openActions
+
+gates:
+  - id: G0
+    name: Mandate and authoritative sources
+    accountableRole: initiative-sponsor
+    criteria:
+      - Scope and non-scope are approved.
+      - Authoritative source owners are identified.
+      - Data access and processing are authorized.
+      - Escalation and stop authority are explicit.
+
+  - id: G1
+    name: Input fitness and semantic classification
+    accountableRole: test-and-architecture
+    criteria:
+      - Requirements, recommendations, decisions and assumptions are distinguished.
+      - Applicability conditions are explicit.
+      - Missing inputs have an owner and disposition.
+
+  - id: G2
+    name: BOM and architecture review
+    accountableRole: architecture-and-industrial-expert
+    criteria:
+      - BOM alternatives reference approved rules and sources.
+      - Trade-offs and uncertainty are visible.
+      - Compatibility and obsolescence checks are complete.
+
+  - id: G3
+    name: IaC quality and plan
+    accountableRole: platform-devops
+    criteria:
+      - Generated code has provenance and review ownership.
+      - Schema, lint, unit and policy checks pass.
+      - Plan contains no unreviewed destructive change.
+      - Rollback and evidence capture are defined.
+
+  - id: G4
+    name: Cybersecurity and supply chain
+    accountableRole: cybersecurity
+    criteria:
+      - Secrets are not present in generated artefacts or recordings.
+      - SBOM and vulnerability disposition are available.
+      - Licence, signature and source controls pass.
+
+  - id: G5
+    name: Testbed execution
+    accountableRole: integration-and-test
+    criteria:
+      - Environment fitness and representativity limits are recorded.
+      - Deployment and rollback results are available.
+      - Required functional, performance and resilience checks ran.
+
+  - id: G6
+    name: Evidence completeness
+    accountableRole: test-authority
+    criteria:
+      - Required evidence envelopes are complete.
+      - OTEL trace topology and provenance checks pass.
+      - Deviations and manual interventions are visible.
+
+  - id: G7
+    name: Release recommendation and accountable decision
+    accountableRole: release-authority
+    criteria:
+      - Residual risk and uncertainty are explicit.
+      - GO, CONDITIONAL GO or NO-GO rationale is reviewable.
+      - Accountable human approval is recorded.
+
+  - id: G8
+    name: Operational telemetry release
+    accountableRole: customer-authorized-role-and-internal-data-owner
+    criteria:
+      - Exact data lot and purpose are identified.
+      - Contract, confidentiality and data classification checks pass.
+      - Aggregation, retention, access and deletion controls are defined.
+      - Lot-level approval is recorded.
+
+  - id: G9
+    name: Expert learning update
+    accountableRole: industrial-expert-owner
+    criteria:
+      - Evidence applicability and sufficiency have been reviewed.
+      - Confounders, safety margins and affected products are assessed.
+      - Change, rejection or further experiment is recorded.
+      - Any accepted update is versioned and reversible.

@@ -1,0 +1,68 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor #FCFCFA
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam activity {
+  BackgroundColor #F6F8FA
+  BorderColor #334155
+  DiamondBackgroundColor #FFF4CE
+  DiamondBorderColor #8A6D1D
+}
+title BPMN Process View — MTP to Governed Learning
+
+|Engineering Inputs|
+start
+:Select approved MTP section,\nconstraints and sizing baseline;
+:Classify requirement, recommendation,\ndecision and assumption;
+
+|Assistant / Engineering Platform|
+:Create candidate Solution Manifest;
+:Resolve BOM alternatives and\nrequired falsification evidence;
+
+|Architecture & Industrial Experts|
+if (G2: BOM and architecture accepted?) then (yes)
+else (no)
+  :Reject or request revision;
+  stop
+endif
+
+|Assistant / CI-CD|
+:Generate IaC, tests and\ndocumentation draft;
+:Run schema, lint, plan, policy,\nsupply-chain and security checks;
+
+|Platform, Cyber & Test|
+if (G3/G4 passed?) then (yes)
+else (no)
+  :Return evidence-backed findings;
+  stop
+endif
+:Approve isolated testbed execution;
+
+|CI-CD & Testbed|
+:Deploy candidate and execute\nhealth, performance and resilience tests;
+:Capture OTEL-linked evidence,\ndeviations and rollback result;
+
+|Test Authority & Release Roles|
+if (G6 evidence complete?) then (yes)
+  :Prepare GO / CONDITIONAL GO /\nNO-GO recommendation;
+else (no)
+  :Record insufficient evidence;
+endif
+
+|Customer/Data & Industrial Experts|
+if (Operational telemetry proposed?) then (yes)
+  if (G8 exact data lot approved?) then (yes)
+    :Prepare learning proposal;
+    if (G9 expert update approved?) then (yes)
+      :Version approved sizing rule\nor template update;
+    else (no)
+      :Reject or request more evidence;
+    endif
+  else (no)
+    :Do not reuse telemetry;
+  endif
+else (no)
+endif
+stop
+@enduml

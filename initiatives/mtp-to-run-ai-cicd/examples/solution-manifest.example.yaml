@@ -1,0 +1,94 @@
+apiVersion: engineering.example/v0alpha1
+kind: SolutionManifest
+metadata:
+  id: matcher-pilot-candidate-a
+  version: 0.1.0
+  classification: private-pilot
+  status: proposed
+
+sources:
+  - id: MTP-DEMO-001
+    type: master-test-plan
+    version: 1.0
+    digest: sha256:DEMO_REPLACE_ME
+    authoritativeOwner: test-owner
+  - id: SIZER-MATCHER-DEMO
+    type: sizing-model
+    version: 5.2-demo
+    digest: sha256:DEMO_REPLACE_ME
+    authoritativeOwner: industrial-expert-owner
+
+statements:
+  - id: MTP-REC-FAILOVER-001
+    authorityType: mtp-recommendation
+    text: Demonstrate continuity after loss of one compute node.
+    status: accepted-for-pilot
+    sourceRef: MTP-DEMO-001
+  - id: ASM-PEAK-001
+    authorityType: assumption
+    text: Peak load remains below 3500 transactions per second.
+    status: to-be-falsified
+    sourceRef: MTP-DEMO-001
+
+workload:
+  nominalTransactionsPerSecond: 2000
+  peakTransactionsPerSecond: 3500
+  workloadProfile: demo-synthetic-v1
+
+resilience:
+  toleratedComputeNodeFailures: 1
+  recoveryTimeObjectiveSeconds: 60
+
+sizing:
+  modelRef: SIZER-MATCHER-DEMO
+  applicability:
+    workloadProfile: demo-synthetic-v1
+  alternatives:
+    - id: candidate-a
+      description: Balanced performance and resilience candidate
+      status: proposed
+    - id: candidate-b
+      description: Lower-cost candidate requiring additional peak-load evidence
+      status: proposed
+
+bomLinks:
+  - type: hw-bom
+    ref: bom/hw/candidate-a.cdx.json
+  - type: sbom
+    ref: bom/software/candidate-a.cdx.json
+  - type: evidence-bom
+    ref: evidence/candidate-a.cdx.json
+
+evidenceRequired:
+  - id: E-PERF-NOMINAL
+    claim: Sustain nominal load within approved latency thresholds.
+  - id: E-PERF-PEAK
+    claim: Sustain declared peak profile for the defined duration.
+  - id: E-FAILOVER-NODE
+    claim: Recover from loss of one compute node within the RTO.
+  - id: E-TRACE-COMPLETE
+    claim: Required OTEL trace topology and provenance are complete.
+
+deployment:
+  environment: isolated-testbed
+  autonomousProductionApply: false
+  generatedIaC:
+    language: to-be-selected-during-framing
+    sourceDigest: null
+
+approvals:
+  G0: pending
+  G1: pending
+  G2: pending
+  G3: pending
+  G4: pending
+  G5: pending
+  G6: pending
+  G7: not-applicable-to-pilot
+  G8: not-applicable-synthetic-data
+  G9: pending-after-evaluation
+
+telemetryReuse:
+  dataReleaseManifest: null
+  purpose: sizing-rule-review
+  status: not-applicable-synthetic-data
