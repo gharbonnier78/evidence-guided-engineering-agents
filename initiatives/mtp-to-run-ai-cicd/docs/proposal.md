@@ -34,7 +34,7 @@ The intended chain is:
 
 > **MTP recommendations → explicit constraints and hypotheses → traceable BOM variants → governed IaC and tests → testbed evidence → human release recommendation → approved learning proposal.**
 
-The value hypothesis is not that an AI should deploy infrastructure by itself. The value hypothesis is that a controlled assistant can reduce transcription losses, decision latency, undocumented assumptions and false assurance while preserving accountable human decisions.
+The proposal does not assume that an AI should deploy infrastructure by itself or that the benefits are already demonstrated. It tests whether a controlled assistant can reduce transcription losses, decision latency, undocumented assumptions and false assurance while preserving accountable human decisions; H1–H6 make those expected benefits falsifiable.
 
 The pilot would reuse existing assets before introducing new products: MTP material, architecture and product constraints, expert sizing workbooks, approved component information, CI/CD components, observability, test evidence repositories and existing governance. Commercial products would be considered only where they cover a mature commodity capability better than an internal implementation.
 
@@ -48,6 +48,8 @@ Authorize a **two-week framing phase**, with no purchase and no production chang
 - a security, confidentiality and data-reuse assessment;
 - the final 90-day pilot plan, effort range and stop conditions;
 - a recommendation to proceed, narrow or stop.
+
+These outputs form the distinct **P0 Phase-0 exit milestone**. P0 is not G0 under another name: G0 authorizes the mandate, sources and authority for framing; P0 authorizes transition to pilot execution only after the baseline, quantified thresholds, budget envelope and measurement protocol have been reviewed. No 90-day pilot execution starts without P0 approval.
 
 ### 1.2 Why a dedicated initiative directory
 
@@ -124,7 +126,7 @@ Industrial delivery knowledge is often distributed across documents, spreadsheet
 | H1 | Structured MTP ingestion reduces omitted deployment/test constraints. | Baseline and pilot comparison on a known case. |
 | H2 | A versioned Solution Manifest reduces inconsistency between BOM, IaC, tests and documentation. | Cross-artefact consistency checks and defect counts. |
 | H3 | AI-assisted generation reduces preparation time without increasing escaped configuration defects. | Lead-time and quality comparison with human review. |
-| H4 | Runtime evidence can improve expert sizing rules. | Back-test on approved telemetry and expert acceptance rate. |
+| H4 | Typed runtime or synthetic evidence can improve expert sizing rules. | Back-test on explicitly typed evidence and expert acceptance/rejection rate. |
 | H5 | Evidence-generated documentation reduces manual effort and improves replayability. | Independent replay and documentation completeness assessment. |
 | H6 | Explicit gates prevent unauthorized data reuse and unsafe autonomous action. | Gate tests, audit trail and zero unauthorized releases. |
 
@@ -156,17 +158,23 @@ Editable sources: [`02_bpmn_mtp_to_learning.puml`](../diagrams/src/02_bpmn_mtp_t
 
 Editable source: [`03_uml_components.puml`](../diagrams/src/03_uml_components.puml).
 
-### 4.5 Evidence-producing deployment sequence
+### 4.5 Framing and evidence-producing delivery sequence
 
-![UML sequence view](../diagrams/rendered/04_uml_sequence.svg)
+![UML delivery sequence view](../diagrams/rendered/04_uml_delivery_sequence.svg)
 
-Editable source: [`04_uml_sequence.puml`](../diagrams/src/04_uml_sequence.puml).
+Editable source: [`04_uml_delivery_sequence.puml`](../diagrams/src/04_uml_delivery_sequence.puml).
 
-### 4.6 Core information model
+### 4.6 Governed operational-learning sequence
 
-![UML information model](../diagrams/rendered/05_uml_information_model.svg)
+![UML operational-learning sequence](../diagrams/rendered/05_uml_operational_learning_sequence.svg)
 
-Editable source: [`05_uml_information_model.puml`](../diagrams/src/05_uml_information_model.puml).
+Editable source: [`05_uml_operational_learning_sequence.puml`](../diagrams/src/05_uml_operational_learning_sequence.puml).
+
+### 4.7 Core information model
+
+![UML information model](../diagrams/rendered/06_uml_information_model.svg)
+
+Editable source: [`06_uml_information_model.puml`](../diagrams/src/06_uml_information_model.puml).
 
 ---
 
@@ -313,6 +321,8 @@ Human judgment addresses ambiguity, proportionality, exceptions and residual ris
 
 The complete machine-readable proposal is in [`governance/gates.yaml`](../governance/gates.yaml).
 
+These gates are **domain configurations of the board's shared Policy & Human Gate Service**, not a parallel authorization platform. The generic service supplies identity, attribution, evidence references, audit history and enforcement; this initiative supplies MTP-to-Run-specific triggers, criteria and accountable roles. If a generic and initiative rule conflict, the initiative stops for governance reconciliation rather than selecting the more permissive rule.
+
 | Gate | Question | Accountable disposition |
 |---|---|---|
 | G0 — Mandate and sources | Are scope, owners, authoritative sources and data permissions explicit? | Initiative sponsor / source owners |
@@ -326,7 +336,13 @@ The complete machine-readable proposal is in [`governance/gates.yaml`](../govern
 | G8 — Telemetry release | May this exact operational data lot be reused for the stated purpose? | Customer-authorized role + internal data owner |
 | G9 — Learning update | Should the expert rule or template be changed? | Industrial expert owner + governance owner |
 
-Failures should not always mean termination. A gate may produce PASS, CONDITIONAL PASS, FAIL or NOT APPLICABLE, with rationale, owner, expiry and compensating evidence.
+Every gate G0–G9 must have an explicit auditable disposition containing `applicability`, `decision`, `rationale`, `evidenceRefs`, `decidedBy` and `decidedAt`. G0–G7 are always applicable. G8 is applicable only when a proposal uses customer telemetry; G9 is applicable whenever any learning proposal exists. `not-applicable` is a recorded and justified disposition, never an omitted field.
+
+Failures should not always mean termination. A decision may be approved, conditional, rejected or not yet decided, but no simple free-text status replaces the structured disposition.
+
+### 8.1 P0 is a milestone, not a gate
+
+P0 separates the authorized two-week framing phase from pilot execution. It requires approved references for the measured baseline, quantified success and guardrail thresholds, maximum budget/effort, measurement protocol, authorized corpus and STOP/NARROW rules. This preserves G0's distinct meaning: G0 authorizes framing; P0 decides whether evidence from framing justifies starting the pilot.
 
 ---
 
@@ -399,6 +415,14 @@ Reusable = NonPersonal \land ContractAuthorized \land PurposeBound
 For an initial controlled pilot, approval may be captured by email if the message unambiguously references an immutable Data Release Manifest identifier and purpose. The email, manifest, digest, contract reference and approver identity must be stored together. A web interface may later structure the same control.
 
 ### 10.4 No silent learning
+
+Every learning proposal declares exactly one closed source type:
+
+- `customer-telemetry` — requires an immutable Data Release Manifest and approved G8 disposition;
+- `pilot-testbed-evidence` — does not by itself trigger G8;
+- `synthetic-evidence` — does not by itself trigger G8.
+
+All three source types trigger an applicable G9 expert disposition. This prevents an undefined “other corpus” from satisfying the learning invariant through prose alone.
 
 Operational evidence may trigger a proposal such as:
 
@@ -535,7 +559,7 @@ The minimum successful slice is:
 
 | Period | Focus | Exit evidence |
 |---|---|---|
-| Weeks 1–2 | Framing and asset inventory | Confirmed case, sources, owners, risks, baseline and stop conditions |
+| Weeks 1–2 | Framing and asset inventory | Confirmed case, sources, owners, risks, measured baseline, quantified thresholds, budget envelope, measurement protocol and P0 disposition |
 | Weeks 3–4 | Solution Manifest and trace model | Schema, example, source adapters and traceability tests |
 | Weeks 5–7 | BOM/sizing and IaC vertical slice | Alternatives, generated module, policies and pull request |
 | Weeks 8–10 | Testbed execution and OTEL evidence | Deployment, tests, evidence envelope and rollback result |
@@ -543,7 +567,9 @@ The minimum successful slice is:
 
 ### 13.4 Explicit stop conditions
 
-The pilot should stop or be narrowed if:
+The pilot should stop or be narrowed if any condition below is met. During framing, each qualitative condition must be converted into a measurable threshold, an evidence source and an accountable owner; P0 cannot pass while those fields remain undefined.
+
+Initial conditions are:
 
 - authoritative sources or owners cannot be established;
 - the use case cannot be tested without unauthorized customer data;
@@ -593,6 +619,8 @@ The final decision is not simply “the demo worked.” It should select one opt
 - **EXTEND:** run a second pilot on a different product/environment;
 - **INDUSTRIALIZE:** define ownership, funding, service level, security case and product roadmap.
 
+The numeric decision rules for these four outcomes are a blocking P0 deliverable. Until P0 approves them, the repository contains categories for decision design, not evidence that a 90-day pilot is justified.
+
 ---
 
 ## 15. Main risks and controls
@@ -639,7 +667,7 @@ Approve a two-week framing phase with the proposed lead and named domain contact
 
 ### 17.2 Decision B — repository
 
-Approve creation of a private repository named `mtp-to-run-ai-cicd`, or confirm another internal naming convention. The repository is a pilot workspace, not an authoritative enterprise repository or public commitment.
+Approve continuation of `initiatives/mtp-to-run-ai-cicd/` inside the existing Evidence-Guided Engineering Agents repository for framing and specification. Extraction into a separate repository is deferred until executable engines, generators or connectors require an independent release lifecycle. The initiative directory is not an authoritative enterprise repository or public commitment.
 
 ### 17.3 Decision C — pilot source
 

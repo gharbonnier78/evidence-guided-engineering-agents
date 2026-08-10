@@ -16,7 +16,8 @@ La phase de cadrage devrait livrer :
 - l'inventaire des actifs réutilisables et sources faisant autorité ;
 - le contrat minimal de traçabilité ;
 - l'évaluation sécurité, confidentialité et réutilisation des données ;
-- le plan, l'effort et les conditions d'arrêt du pilote de 90 jours ;
+- la baseline mesurée, les seuils quantifiés, le budget maximal et le protocole de mesure ;
+- le plan et les conditions d'arrêt du pilote de 90 jours ;
 - une recommandation explicite : arrêter, réduire ou poursuivre.
 
-La décision demandée à ce stade porte uniquement sur ce cadrage. Le dépôt contient une proposition détaillée, dix gates, un exemple de Solution Manifest et cinq vues SysML/UML/BPMN pour permettre une revue technique contradictoire avant tout engagement.
+Ces résultats constituent le jalon P0 : le pilote ne démarre pas si P0 n'est pas approuvé. La décision demandée à ce stade porte uniquement sur le cadrage. Le dépôt contient une proposition détaillée, dix gates réutilisant le service commun de décisions humaines, un exemple de Solution Manifest et six vues SysML/UML/BPMN pour permettre une revue technique contradictoire avant tout engagement.

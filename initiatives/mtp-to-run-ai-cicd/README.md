@@ -40,3 +40,6 @@ This is an initiative of the wider Evidence-Guided Engineering Agents repository
 - Customer telemetry is not reused merely because it is non-personal. Contract, confidentiality, purpose, security and lot-level approval gates apply.
 - MTP recommendations remain distinguishable from contractual requirements, architecture decisions and sizing assumptions.
 - No production autonomous remediation is included in the initial pilot.
+- G0–G9 reuse the board's shared Policy & Human Gate Service; this initiative defines domain criteria rather than a parallel gate platform.
+- The two-week framing phase ends at the distinct P0 milestone. The pilot cannot start before its baseline, thresholds, budget and measurement protocol are approved.
+- Learning evidence uses a closed source type: customer telemetry, pilot testbed evidence or synthetic evidence.

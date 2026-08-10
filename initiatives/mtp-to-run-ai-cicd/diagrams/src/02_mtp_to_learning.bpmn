@@ -1,85 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
-  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
-  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
   id="Definitions_MTPToRun" targetNamespace="https://engineering.example/mtp-to-run">
   <bpmn:process id="Process_MTPToLearning" name="MTP to Governed Learning" isExecutable="false">
-    <bpmn:laneSet id="LaneSet_1">
-      <bpmn:lane id="Lane_Inputs" name="Engineering Inputs">
-        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Task_SelectInputs</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Task_Classify</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_Platform" name="Assistant and Engineering Platform">
-        <bpmn:flowNodeRef>Task_Manifest</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Task_BOM</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Task_Generate</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Task_Check</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_HumanGates" name="Architecture, Industrial, Platform, Cyber and Test">
-        <bpmn:flowNodeRef>Gateway_G2</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_G34</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Task_Reject</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_Runtime" name="CI/CD and Testbed">
-        <bpmn:flowNodeRef>Task_Deploy</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Task_Evidence</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_Decision" name="Test Authority and Data/Expert Governance">
-        <bpmn:flowNodeRef>Gateway_G6</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Task_Dossier</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_G8</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Task_Learning</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_G9</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Task_Update</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>EndEvent_1</bpmn:flowNodeRef>
-      </bpmn:lane>
-    </bpmn:laneSet>
+    <bpmn:startEvent id="Start" name="Framing case selected"/>
+    <bpmn:exclusiveGateway id="G0" name="G0 mandate and sources approved?"/>
+    <bpmn:task id="Classify" name="Classify inputs and assumptions"/>
+    <bpmn:exclusiveGateway id="G1" name="G1 inputs fit?"/>
+    <bpmn:task id="Frame" name="Measure baseline; define thresholds, budget and protocol"/>
+    <bpmn:exclusiveGateway id="P0" name="P0 phase exit approved?"/>
+    <bpmn:task id="Manifest" name="Create manifest, BOM alternatives and evidence obligations"/>
+    <bpmn:exclusiveGateway id="G2" name="G2 BOM and architecture accepted?"/>
+    <bpmn:task id="Generate" name="Generate IaC, tests and documentation"/>
+    <bpmn:exclusiveGateway id="G3" name="G3 IaC quality passed?"/>
+    <bpmn:exclusiveGateway id="G4" name="G4 cyber and supply chain passed?"/>
+    <bpmn:task id="Execute" name="Deploy and test in isolated testbed"/>
+    <bpmn:exclusiveGateway id="G5" name="G5 execution credible?"/>
+    <bpmn:task id="Evidence" name="Capture and validate OTEL-linked evidence"/>
+    <bpmn:exclusiveGateway id="G6" name="G6 evidence complete?"/>
+    <bpmn:task id="Assess" name="Assess residual risk and prepare decision dossier"/>
+    <bpmn:exclusiveGateway id="G7" name="G7 accountable disposition recorded?"/>
+    <bpmn:exclusiveGateway id="HasLearning" name="Learning proposal created?"/>
+    <bpmn:task id="TypeSource" name="Declare closed learning sourceType"/>
+    <bpmn:exclusiveGateway id="IsCustomer" name="Customer telemetry?"/>
+    <bpmn:task id="DRM" name="Create immutable Data Release Manifest"/>
+    <bpmn:exclusiveGateway id="G8" name="G8 exact data lot approved?"/>
+    <bpmn:task id="PrepareLearning" name="Prepare evidence-backed learning proposal"/>
+    <bpmn:exclusiveGateway id="G9" name="G9 expert update approved?"/>
+    <bpmn:task id="Update" name="Version reversible expert baseline update"/>
+    <bpmn:task id="RecordNA" name="Record justified not-applicable dispositions"/>
+    <bpmn:task id="Reject" name="Stop, reject or request revision"/>
+    <bpmn:endEvent id="End" name="Decisions and evidence recorded"/>
 
-    <bpmn:startEvent id="StartEvent_1" name="Pilot candidate selected"/>
-    <bpmn:task id="Task_SelectInputs" name="Select approved MTP, constraints and sizing baseline"/>
-    <bpmn:task id="Task_Classify" name="Classify semantic status and assumptions"/>
-    <bpmn:task id="Task_Manifest" name="Create candidate Solution Manifest"/>
-    <bpmn:task id="Task_BOM" name="Resolve BOM alternatives and evidence obligations"/>
-    <bpmn:exclusiveGateway id="Gateway_G2" name="G2 BOM and architecture accepted?"/>
-    <bpmn:task id="Task_Generate" name="Generate IaC, tests and documentation draft"/>
-    <bpmn:task id="Task_Check" name="Run deterministic plan, policy and supply-chain checks"/>
-    <bpmn:exclusiveGateway id="Gateway_G34" name="G3/G4 passed?"/>
-    <bpmn:task id="Task_Reject" name="Reject or request revision"/>
-    <bpmn:task id="Task_Deploy" name="Deploy and test in isolated testbed"/>
-    <bpmn:task id="Task_Evidence" name="Capture OTEL-linked evidence and rollback"/>
-    <bpmn:exclusiveGateway id="Gateway_G6" name="G6 evidence complete?"/>
-    <bpmn:task id="Task_Dossier" name="Prepare accountable decision dossier"/>
-    <bpmn:exclusiveGateway id="Gateway_G8" name="G8 telemetry lot approved?"/>
-    <bpmn:task id="Task_Learning" name="Prepare learning proposal"/>
-    <bpmn:exclusiveGateway id="Gateway_G9" name="G9 expert update approved?"/>
-    <bpmn:task id="Task_Update" name="Version approved rule or template"/>
-    <bpmn:endEvent id="EndEvent_1" name="Decision and evidence recorded"/>
-
-    <bpmn:sequenceFlow id="F1" sourceRef="StartEvent_1" targetRef="Task_SelectInputs"/>
-    <bpmn:sequenceFlow id="F2" sourceRef="Task_SelectInputs" targetRef="Task_Classify"/>
-    <bpmn:sequenceFlow id="F3" sourceRef="Task_Classify" targetRef="Task_Manifest"/>
-    <bpmn:sequenceFlow id="F4" sourceRef="Task_Manifest" targetRef="Task_BOM"/>
-    <bpmn:sequenceFlow id="F5" sourceRef="Task_BOM" targetRef="Gateway_G2"/>
-    <bpmn:sequenceFlow id="F6_yes" name="Yes" sourceRef="Gateway_G2" targetRef="Task_Generate"/>
-    <bpmn:sequenceFlow id="F6_no" name="No" sourceRef="Gateway_G2" targetRef="Task_Reject"/>
-    <bpmn:sequenceFlow id="F7" sourceRef="Task_Generate" targetRef="Task_Check"/>
-    <bpmn:sequenceFlow id="F8" sourceRef="Task_Check" targetRef="Gateway_G34"/>
-    <bpmn:sequenceFlow id="F9_yes" name="Yes" sourceRef="Gateway_G34" targetRef="Task_Deploy"/>
-    <bpmn:sequenceFlow id="F9_no" name="No" sourceRef="Gateway_G34" targetRef="Task_Reject"/>
-    <bpmn:sequenceFlow id="F10" sourceRef="Task_Deploy" targetRef="Task_Evidence"/>
-    <bpmn:sequenceFlow id="F11" sourceRef="Task_Evidence" targetRef="Gateway_G6"/>
-    <bpmn:sequenceFlow id="F12_yes" name="Yes" sourceRef="Gateway_G6" targetRef="Task_Dossier"/>
-    <bpmn:sequenceFlow id="F12_no" name="No - record gap" sourceRef="Gateway_G6" targetRef="Task_Dossier"/>
-    <bpmn:sequenceFlow id="F13" sourceRef="Task_Dossier" targetRef="Gateway_G8"/>
-    <bpmn:sequenceFlow id="F14_yes" name="Yes" sourceRef="Gateway_G8" targetRef="Task_Learning"/>
-    <bpmn:sequenceFlow id="F14_no" name="No / not applicable" sourceRef="Gateway_G8" targetRef="EndEvent_1"/>
-    <bpmn:sequenceFlow id="F15" sourceRef="Task_Learning" targetRef="Gateway_G9"/>
-    <bpmn:sequenceFlow id="F16_yes" name="Yes" sourceRef="Gateway_G9" targetRef="Task_Update"/>
-    <bpmn:sequenceFlow id="F16_no" name="No" sourceRef="Gateway_G9" targetRef="EndEvent_1"/>
-    <bpmn:sequenceFlow id="F17" sourceRef="Task_Update" targetRef="EndEvent_1"/>
-    <bpmn:sequenceFlow id="F18" sourceRef="Task_Reject" targetRef="EndEvent_1"/>
+    <bpmn:sequenceFlow id="F01" sourceRef="Start" targetRef="G0"/>
+    <bpmn:sequenceFlow id="F02" name="approved" sourceRef="G0" targetRef="Classify"/>
+    <bpmn:sequenceFlow id="F03" name="rejected" sourceRef="G0" targetRef="Reject"/>
+    <bpmn:sequenceFlow id="F04" sourceRef="Classify" targetRef="G1"/>
+    <bpmn:sequenceFlow id="F05" name="approved" sourceRef="G1" targetRef="Frame"/>
+    <bpmn:sequenceFlow id="F06" name="rejected" sourceRef="G1" targetRef="Reject"/>
+    <bpmn:sequenceFlow id="F07" sourceRef="Frame" targetRef="P0"/>
+    <bpmn:sequenceFlow id="F08" name="approved" sourceRef="P0" targetRef="Manifest"/>
+    <bpmn:sequenceFlow id="F09" name="stop or narrow" sourceRef="P0" targetRef="Reject"/>
+    <bpmn:sequenceFlow id="F10" sourceRef="Manifest" targetRef="G2"/>
+    <bpmn:sequenceFlow id="F11" name="approved" sourceRef="G2" targetRef="Generate"/>
+    <bpmn:sequenceFlow id="F12" name="rejected" sourceRef="G2" targetRef="Reject"/>
+    <bpmn:sequenceFlow id="F13" sourceRef="Generate" targetRef="G3"/>
+    <bpmn:sequenceFlow id="F14" name="approved" sourceRef="G3" targetRef="G4"/>
+    <bpmn:sequenceFlow id="F15" name="rejected" sourceRef="G3" targetRef="Reject"/>
+    <bpmn:sequenceFlow id="F16" name="approved" sourceRef="G4" targetRef="Execute"/>
+    <bpmn:sequenceFlow id="F17" name="rejected" sourceRef="G4" targetRef="Reject"/>
+    <bpmn:sequenceFlow id="F18" sourceRef="Execute" targetRef="G5"/>
+    <bpmn:sequenceFlow id="F19" name="approved" sourceRef="G5" targetRef="Evidence"/>
+    <bpmn:sequenceFlow id="F20" name="rejected" sourceRef="G5" targetRef="Reject"/>
+    <bpmn:sequenceFlow id="F21" sourceRef="Evidence" targetRef="G6"/>
+    <bpmn:sequenceFlow id="F22" name="approved" sourceRef="G6" targetRef="Assess"/>
+    <bpmn:sequenceFlow id="F23" name="rejected" sourceRef="G6" targetRef="Reject"/>
+    <bpmn:sequenceFlow id="F24" sourceRef="Assess" targetRef="G7"/>
+    <bpmn:sequenceFlow id="F25" name="recorded" sourceRef="G7" targetRef="HasLearning"/>
+    <bpmn:sequenceFlow id="F26" name="missing" sourceRef="G7" targetRef="Reject"/>
+    <bpmn:sequenceFlow id="F27" name="yes" sourceRef="HasLearning" targetRef="TypeSource"/>
+    <bpmn:sequenceFlow id="F28" name="no" sourceRef="HasLearning" targetRef="RecordNA"/>
+    <bpmn:sequenceFlow id="F29" sourceRef="TypeSource" targetRef="IsCustomer"/>
+    <bpmn:sequenceFlow id="F30" name="customer-telemetry" sourceRef="IsCustomer" targetRef="DRM"/>
+    <bpmn:sequenceFlow id="F31" name="testbed or synthetic" sourceRef="IsCustomer" targetRef="PrepareLearning"/>
+    <bpmn:sequenceFlow id="F32" sourceRef="DRM" targetRef="G8"/>
+    <bpmn:sequenceFlow id="F33" name="approved" sourceRef="G8" targetRef="PrepareLearning"/>
+    <bpmn:sequenceFlow id="F34" name="rejected" sourceRef="G8" targetRef="Reject"/>
+    <bpmn:sequenceFlow id="F35" sourceRef="PrepareLearning" targetRef="G9"/>
+    <bpmn:sequenceFlow id="F36" name="approved" sourceRef="G9" targetRef="Update"/>
+    <bpmn:sequenceFlow id="F37" name="rejected or conditional" sourceRef="G9" targetRef="End"/>
+    <bpmn:sequenceFlow id="F38" sourceRef="Update" targetRef="End"/>
+    <bpmn:sequenceFlow id="F39" sourceRef="RecordNA" targetRef="End"/>
+    <bpmn:sequenceFlow id="F40" sourceRef="Reject" targetRef="End"/>
   </bpmn:process>
 </bpmn:definitions>

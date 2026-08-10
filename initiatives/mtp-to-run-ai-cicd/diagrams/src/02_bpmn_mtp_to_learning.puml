@@ -3,66 +3,101 @@
 skinparam backgroundColor #FCFCFA
 skinparam shadowing false
 skinparam defaultFontName DejaVu Sans
-skinparam activity {
-  BackgroundColor #F6F8FA
-  BorderColor #334155
-  DiamondBackgroundColor #FFF4CE
-  DiamondBorderColor #8A6D1D
-}
-title BPMN Process View — MTP to Governed Learning
+title BPMN Coverage View — Phase 0, G0–G9 and Governed Learning
+
+|Sponsor & Source Owners|
+start
+:Select bounded framing case;
+if (G0 mandate and sources approved?) then (yes)
+else (no)
+  :Stop or reframe;
+  stop
+endif
 
 |Engineering Inputs|
-start
-:Select approved MTP section,\nconstraints and sizing baseline;
-:Classify requirement, recommendation,\ndecision and assumption;
+:Classify semantic status and assumptions;
+if (G1 inputs fit?) then (yes)
+else (no)
+  :Resolve gaps or stop;
+  stop
+endif
+:Measure baseline and define thresholds,\nbudget and protocol;
+
+|Sponsor & Source Owners|
+if (P0 phase exit approved?) then (yes)
+else (no)
+  :STOP or NARROW after framing;
+  stop
+endif
 
 |Assistant / Engineering Platform|
-:Create candidate Solution Manifest;
-:Resolve BOM alternatives and\nrequired falsification evidence;
-
+:Create Solution Manifest, BOM alternatives\nand evidence obligations;
 |Architecture & Industrial Experts|
-if (G2: BOM and architecture accepted?) then (yes)
+if (G2 BOM and architecture accepted?) then (yes)
 else (no)
   :Reject or request revision;
   stop
 endif
 
 |Assistant / CI-CD|
-:Generate IaC, tests and\ndocumentation draft;
-:Run schema, lint, plan, policy,\nsupply-chain and security checks;
-
-|Platform, Cyber & Test|
-if (G3/G4 passed?) then (yes)
+:Generate IaC, tests and documentation;
+:Run deterministic checks;
+|Platform / DevOps|
+if (G3 IaC quality passed?) then (yes)
 else (no)
-  :Return evidence-backed findings;
+  :Return IaC findings;
   stop
 endif
-:Approve isolated testbed execution;
-
-|CI-CD & Testbed|
-:Deploy candidate and execute\nhealth, performance and resilience tests;
-:Capture OTEL-linked evidence,\ndeviations and rollback result;
-
-|Test Authority & Release Roles|
-if (G6 evidence complete?) then (yes)
-  :Prepare GO / CONDITIONAL GO /\nNO-GO recommendation;
+|Cybersecurity|
+if (G4 cyber and supply chain passed?) then (yes)
 else (no)
-  :Record insufficient evidence;
+  :Return security findings;
+  stop
 endif
 
-|Customer/Data & Industrial Experts|
-if (Operational telemetry proposed?) then (yes)
-  if (G8 exact data lot approved?) then (yes)
-    :Prepare learning proposal;
-    if (G9 expert update approved?) then (yes)
-      :Version approved sizing rule\nor template update;
+|Integration & Test|
+:Deploy and test in isolated testbed;
+if (G5 execution credible?) then (yes)
+else (no)
+  :Record failed or unrepresentative execution;
+  stop
+endif
+|OTEL / Test Authority|
+:Capture evidence and deviations;
+if (G6 evidence complete?) then (yes)
+else (no)
+  :Record insufficient evidence;
+  stop
+endif
+|Release Authority|
+:Assess residual risk and uncertainty;
+if (G7 disposition recorded?) then (yes)
+else (no)
+  :Do not issue recommendation;
+  stop
+endif
+
+|Data & Expert Governance|
+if (Learning proposal created?) then (yes)
+  :Declare closed sourceType;
+  if (sourceType = customer-telemetry?) then (yes)
+    :Create immutable Data Release Manifest;
+    if (G8 exact data lot approved?) then (yes)
     else (no)
-      :Reject or request more evidence;
+      :Do not reuse telemetry;
+      stop
     endif
-  else (no)
-    :Do not reuse telemetry;
+  else (testbed or synthetic)
+    :Record G8 not-applicable rationale;
+  endif
+  :Prepare learning proposal;
+  if (G9 expert update approved?) then (yes)
+    :Version reversible expert baseline update;
+  else (no / conditional)
+    :Retain baseline or request evidence;
   endif
 else (no)
+  :Record G8/G9 not-applicable rationales;
 endif
 stop
 @enduml

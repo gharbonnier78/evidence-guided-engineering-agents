@@ -61,10 +61,20 @@ class EvidenceEnvelope {
 
 class GateDisposition {
   +gateId: Identifier
-  +status: GateStatus
-  +accountableRole: Role
+  +applicability: Applicability
+  +decision: GateDecision
+  +rationale: Text
+  +evidenceRefs: Identifier[*]
+  +decidedBy: Role
   +decidedAt: Timestamp
-  +expiry: Timestamp
+}
+
+class Phase0Exit {
+  +baselineRef: Identifier
+  +thresholdsRef: Identifier
+  +budgetRef: Identifier
+  +measurementProtocolRef: Identifier
+  +decision: GateDecision
 }
 
 class DataReleaseManifest {
@@ -77,6 +87,8 @@ class DataReleaseManifest {
 class LearningProposal {
   +id: Identifier
   +targetRule: Identifier
+  +sourceType: LearningSourceType
+  +evidenceRefs: Identifier[1..*]
   +status: ReviewStatus
 }
 
@@ -89,8 +101,10 @@ GeneratedArtefact "*" --> "*" EvidenceEnvelope : executed as
 EvidenceObligation "1" --> "*" EvidenceEnvelope : satisfied by
 GateDisposition "*" --> "1" SolutionManifest : controls
 GateDisposition "*" --> "*" EvidenceEnvelope : cites
+Phase0Exit "1" --> "1" SolutionManifest : authorizes pilot for
+Phase0Exit "1" --> "1..*" EvidenceEnvelope : cites framing evidence
 DataReleaseManifest "1" --> "1..*" EvidenceEnvelope : authorizes lot from
 LearningProposal "1" --> "1..*" EvidenceEnvelope : justified by
-LearningProposal "1" --> "0..1" DataReleaseManifest : requires
+LearningProposal "1" --> "0..1" DataReleaseManifest : requires for customer telemetry
 GateDisposition "*" --> "0..1" LearningProposal : approves or rejects
 @enduml

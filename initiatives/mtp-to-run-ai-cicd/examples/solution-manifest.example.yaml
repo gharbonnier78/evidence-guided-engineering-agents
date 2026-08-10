@@ -9,7 +9,7 @@ metadata:
 sources:
   - id: MTP-DEMO-001
     type: master-test-plan
-    version: 1.0
+    version: "1.0"
     digest: sha256:DEMO_REPLACE_ME
     authoritativeOwner: test-owner
   - id: SIZER-MATCHER-DEMO
@@ -76,19 +76,97 @@ deployment:
     language: to-be-selected-during-framing
     sourceDigest: null
 
-approvals:
-  G0: pending
-  G1: pending
-  G2: pending
-  G3: pending
-  G4: pending
-  G5: pending
-  G6: pending
-  G7: not-applicable-to-pilot
-  G8: not-applicable-synthetic-data
-  G9: pending-after-evaluation
+phase0Exit:
+  applicability: pending
+  decision: not-decided
+  rationale: Baseline, thresholds, budget and protocol must be produced during the two-week framing phase.
+  evidenceRefs: []
+  decidedBy: null
+  decidedAt: null
+  baselineRef: null
+  thresholdsRef: null
+  budgetRef: null
+  measurementProtocolRef: null
 
-telemetryReuse:
-  dataReleaseManifest: null
-  purpose: sizing-rule-review
-  status: not-applicable-synthetic-data
+learningProposals:
+  - id: LP-DEMO-001
+    targetRule: SIZER-MATCHER-DEMO:R-27
+    sourceType: synthetic-evidence
+    evidenceRefs:
+      - evidence/synthetic-backtest-001.json
+    status: proposed
+
+approvals:
+  G0:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting mandate and source authorization.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G1:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting semantic and input-fitness review.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G2:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting BOM and architecture review.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G3:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting IaC quality evidence.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G4:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting cybersecurity and supply-chain review.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G5:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting authorized testbed execution.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G6:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting evidence-completeness assessment.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G7:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting accountable release recommendation.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G8:
+    applicability: not-applicable
+    decision: not-decided
+    rationale: The example uses synthetic evidence and proposes no customer telemetry reuse.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G9:
+    applicability: applicable
+    decision: not-decided
+    rationale: A synthetic-evidence learning proposal exists and requires expert disposition.
+    evidenceRefs:
+      - evidence/synthetic-backtest-001.json
+    decidedBy: null
+    decidedAt: null
+
+telemetryReuse: null
