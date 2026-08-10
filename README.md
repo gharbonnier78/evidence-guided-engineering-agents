@@ -39,7 +39,7 @@ flowchart TD
 |---|---|---|
 | BOM and delivery | BOM Intelligence | MTP-to-BOM reasoning, sizing, Data/ML/SBOM coherence, telemetry feedback, reviewed IaC generation |
 | Integration | Integration Strategy Challenger | Integration options, dependencies, failure modes, test and observability obligations |
-| IP and legal | IP & Legal Opportunity | Invention capture, prior-art challenge, protection options, legal/regulatory risks and opportunities |
+| IP and legal | IP & Legal Opportunity | Governed invention harvesting, prior-art challenge, professional-review preparation, protection options, legal/regulatory risks and opportunities |
 | Funding and economics | Funding & Business Evidence | Funding discovery, probabilistic business cases, assumption stress tests, staged investment |
 
 These are roles in a decision process, not artificial executives. They may retrieve, compare, calculate, simulate, draft, and challenge. Humans retain accountability and authority.
@@ -54,6 +54,7 @@ These are roles in a decision process, not artificial executives. They may retri
 - [`shared/schemas/`](shared/schemas/) — machine-readable evidence, opportunity, and decision records.
 - [`experiments/`](experiments/) — synthetic, falsifiable demonstration plans.
 - [`initiatives/mtp-to-run-ai-cicd/`](initiatives/mtp-to-run-ai-cicd/) — bounded MTP-to-BOM-to-IaC working-group proposal and 90-day pilot package.
+- [`initiatives/innovation-to-ip-protection/`](initiatives/innovation-to-ip-protection/) — evolving innovation-harvest-to-professional-IP-review flow, gates, source tiers, and partner-routing hypothesis.
 - [`vendor-landscape/`](vendor-landscape/) — build/buy/integrate assessment method.
 
 ## Common decision chain
