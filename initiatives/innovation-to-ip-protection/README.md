@@ -54,6 +54,30 @@ Every retrieval must carry source provenance and authorization status.
 
 The agent must not bypass paywalls, authentication, robots restrictions, contractual limits, confidentiality obligations, or database licensing terms.
 
+## Practitioner-mentioned tools and market references
+
+The tools below are retained as **reference points for build/buy/integrate comparison**, not as endorsements and not as validated benchmarks. The list originates from practitioner discussion and should evolve as hands-on evaluation evidence is collected.
+
+| Tool | Current positioning worth examining | Official reference |
+|---|---|---|
+| **Tradespace** | enterprise-side invention harvesting, invention disclosure development, IP workflow and access to external patent professionals; particularly relevant to the upstream `Innovation Harvester → professional review` hypothesis | https://tradespace.io/ ; https://tradespace.io/platform/create/ |
+| **Questel Orbit Intelligence** | established patent intelligence/search and analytics platform, now including AI-assisted capabilities; useful comparator for prior-art search, portfolio intelligence and incumbent-suite integration | https://www.questel.com/patent/ip-intelligence-software/orbit-intelligence/ |
+| **IPRally** | AI-native patent search/review/classification with novelty, patentability, invalidity and FTO search use cases; useful comparator for the `Prior-Art Challenger` | https://www.iprally.com/product/overview ; https://www.iprally.com/solutions/patent-searcher |
+| **DeepIP** | AI-assisted patentability, prior-art search, disclosure preparation, drafting and prosecution; useful comparator across the transition from preliminary invention analysis to patent-professional work | https://www.deepip.ai/ ; https://www.deepip.ai/products/ai-patentability |
+| **Ankar** | AI platform spanning idea generation, patentability assessment, drafting, prosecution and protection workflows; useful comparator for end-to-end innovation/IP orchestration | https://ankar.ai/ ; https://ankar.ai/product-pages/overview |
+| **Qthena (Questel / ipQuants)** | AI-assisted IP workspace covering invention disclosures, patent-search review, FTO, drafting, claim charts and office-action responses; useful comparator for law-firm/professional downstream workflows | https://www.questel.com/qthena/ ; https://www.questel.com/qthena/features/ask-qthena |
+
+### Practitioner context to preserve
+
+The current qualitative feedback distinguishes two broad market patterns:
+
+- established IP-suite vendors extending historical products with AI, potentially offering breadth and workflow integration but not necessarily the best task-level ergonomics or performance;
+- newer AI-native specialists targeting narrower workflows, potentially more agile or effective on the task for which they were designed.
+
+This is **an observation to test**, not a conclusion. Vendor claims, practitioner experience, controlled benchmark results, security/confidentiality review, licensing constraints, interoperability, and total cost should remain separate evidence classes.
+
+The practitioner feedback also distinguishes enterprise/in-house workflows from law-firm/prosecution workflows. That distinction should be preserved in future vendor evaluation rather than comparing all products under one generic "patent AI" score.
+
 ## Proposed decision gates
 
 | Gate | Decision | Minimum evidence | Human authority |
