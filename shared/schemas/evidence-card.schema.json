@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/evidence-card.schema.json",
+  "title": "Evidence Card",
+  "type": "object",
+  "required": ["evidence_id", "source", "observed_at", "classification", "content_digest"],
+  "properties": {
+    "evidence_id": {"type": "string"},
+    "source": {
+      "type": "object",
+      "required": ["type", "reference", "version"],
+      "properties": {
+        "type": {"type": "string"},
+        "reference": {"type": "string"},
+        "version": {"type": "string"},
+        "accessed_at": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "observed_at": {"type": "string", "format": "date-time"},
+    "classification": {"type": "string"},
+    "authorized_purpose": {"type": "string"},
+    "content_digest": {"type": "string"},
+    "produced_by": {
+      "type": "object",
+      "description": "Automated provenance. Omit only when the card was neither generated nor assessed by an automated system.",
+      "properties": {
+        "agent_role": {"type": "string"},
+        "agent_version": {"type": "string"},
+        "model_version": {"type": "string"},
+        "tool_versions": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "prompt_or_policy_ref": {"type": "string"}
+      },
+      "required": ["agent_role", "agent_version", "model_version", "tool_versions", "prompt_or_policy_ref"],
+      "additionalProperties": false
+    },
+    "quality": {
+      "type": "object",
+      "properties": {
+        "relevance": {"enum": ["low", "medium", "high", "unknown"]},
+        "credibility": {"enum": ["low", "medium", "high", "unknown"]},
+        "representativity": {"enum": ["low", "medium", "high", "unknown"]},
+        "freshness": {"enum": ["low", "medium", "high", "unknown"]},
+        "reproducibility": {"enum": ["low", "medium", "high", "unknown"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
