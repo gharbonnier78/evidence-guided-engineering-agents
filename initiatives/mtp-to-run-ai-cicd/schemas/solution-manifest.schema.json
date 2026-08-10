@@ -1,0 +1,353 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://engineering.example/schemas/solution-manifest.schema.json",
+  "title": "MTP-to-Run Solution Manifest",
+  "type": "object",
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "sources",
+    "statements",
+    "evidenceRequired",
+    "phase0Exit",
+    "learningProposals",
+    "approvals"
+  ],
+  "$defs": {
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "gateDisposition": {
+      "type": "object",
+      "required": [
+        "applicability",
+        "decision",
+        "rationale",
+        "evidenceRefs",
+        "decidedBy",
+        "decidedAt"
+      ],
+      "properties": {
+        "applicability": { "enum": ["applicable", "not-applicable", "pending"] },
+        "decision": { "enum": ["approved", "rejected", "conditional", "not-decided"] },
+        "rationale": { "type": "string", "minLength": 1 },
+        "evidenceRefs": { "$ref": "#/$defs/evidenceRefs" },
+        "decidedBy": { "type": ["string", "null"] },
+        "decidedAt": { "type": ["string", "null"], "format": "date-time" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": { "applicability": { "const": "not-applicable" } },
+            "required": ["applicability"]
+          },
+          "then": {
+            "type": "object",
+            "properties": { "decision": { "const": "not-decided" } }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": { "decision": { "enum": ["approved", "rejected", "conditional"] } },
+            "required": ["decision"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "decidedBy": { "type": "string", "minLength": 1 },
+              "decidedAt": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "alwaysApplicableGateDisposition": {
+      "allOf": [
+        { "$ref": "#/$defs/gateDisposition" },
+        { "type": "object", "properties": { "applicability": { "const": "applicable" } } }
+      ]
+    },
+    "phase0Disposition": {
+      "type": "object",
+      "required": [
+        "applicability",
+        "decision",
+        "rationale",
+        "evidenceRefs",
+        "decidedBy",
+        "decidedAt",
+        "baselineRef",
+        "thresholdsRef",
+        "budgetRef",
+        "measurementProtocolRef"
+      ],
+      "properties": {
+        "applicability": { "enum": ["applicable", "pending"] },
+        "decision": { "enum": ["approved", "rejected", "conditional", "not-decided"] },
+        "rationale": { "type": "string", "minLength": 1 },
+        "evidenceRefs": { "$ref": "#/$defs/evidenceRefs" },
+        "decidedBy": { "type": ["string", "null"] },
+        "decidedAt": { "type": ["string", "null"], "format": "date-time" },
+        "baselineRef": { "type": ["string", "null"] },
+        "thresholdsRef": { "type": ["string", "null"] },
+        "budgetRef": { "type": ["string", "null"] },
+        "measurementProtocolRef": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "apiVersion": { "type": "string" },
+    "kind": { "const": "SolutionManifest" },
+    "metadata": {
+      "type": "object",
+      "required": ["id", "version", "status"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "classification": { "type": "string" },
+        "status": { "enum": ["proposed", "approved-for-testbed", "observed", "superseded"] }
+      },
+      "additionalProperties": true
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "version", "digest", "authoritativeOwner"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "type": "string" },
+          "version": { "type": "string" },
+          "digest": { "type": "string" },
+          "authoritativeOwner": { "type": "string" }
+        }
+      }
+    },
+    "statements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "authorityType", "text", "status", "sourceRef"],
+        "properties": {
+          "id": { "type": "string" },
+          "authorityType": {
+            "enum": [
+              "contractual-requirement",
+              "product-requirement",
+              "architecture-decision",
+              "mtp-recommendation",
+              "sizing-rule",
+              "assumption",
+              "observation",
+              "learning-proposal"
+            ]
+          },
+          "text": { "type": "string" },
+          "status": { "type": "string" },
+          "sourceRef": { "type": "string" }
+        }
+      }
+    },
+    "evidenceRequired": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "claim"],
+        "properties": {
+          "id": { "type": "string" },
+          "claim": { "type": "string" }
+        }
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "properties": {
+        "environment": { "type": "string" },
+        "autonomousProductionApply": { "const": false }
+      },
+      "additionalProperties": true
+    },
+    "phase0Exit": { "$ref": "#/$defs/phase0Disposition" },
+    "learningProposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "targetRule", "sourceType", "evidenceRefs", "status"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "targetRule": { "type": "string", "minLength": 1 },
+          "sourceType": {
+            "enum": ["customer-telemetry", "pilot-testbed-evidence", "synthetic-evidence"]
+          },
+          "evidenceRefs": {
+            "allOf": [
+              { "$ref": "#/$defs/evidenceRefs" },
+              { "type": "array", "minItems": 1 }
+            ]
+          },
+          "status": { "enum": ["proposed", "approved", "rejected", "needs-more-evidence"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "telemetryReuse": {
+      "type": ["object", "null"],
+      "properties": {
+        "dataReleaseManifest": { "type": "string", "minLength": 1 },
+        "purpose": { "type": "string", "minLength": 1 },
+        "lotDigest": { "type": "string", "minLength": 1 }
+      },
+      "required": ["dataReleaseManifest", "purpose", "lotDigest"],
+      "additionalProperties": false
+    },
+    "approvals": {
+      "type": "object",
+      "required": ["G0", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9"],
+      "properties": {
+        "G0": { "$ref": "#/$defs/alwaysApplicableGateDisposition" },
+        "G1": { "$ref": "#/$defs/alwaysApplicableGateDisposition" },
+        "G2": { "$ref": "#/$defs/alwaysApplicableGateDisposition" },
+        "G3": { "$ref": "#/$defs/alwaysApplicableGateDisposition" },
+        "G4": { "$ref": "#/$defs/alwaysApplicableGateDisposition" },
+        "G5": { "$ref": "#/$defs/alwaysApplicableGateDisposition" },
+        "G6": { "$ref": "#/$defs/alwaysApplicableGateDisposition" },
+        "G7": { "$ref": "#/$defs/alwaysApplicableGateDisposition" },
+        "G8": { "$ref": "#/$defs/gateDisposition" },
+        "G9": { "$ref": "#/$defs/gateDisposition" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "type": "object",
+      "if": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "properties": { "status": { "const": "approved-for-testbed" } }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "phase0Exit": {
+            "type": "object",
+            "properties": {
+              "applicability": { "const": "applicable" },
+              "decision": { "const": "approved" },
+              "baselineRef": { "type": "string", "minLength": 1 },
+              "thresholdsRef": { "type": "string", "minLength": 1 },
+              "budgetRef": { "type": "string", "minLength": 1 },
+              "measurementProtocolRef": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "if": { "type": "object", "properties": { "learningProposals": { "type": "array", "minItems": 1 } } },
+      "then": {
+        "type": "object",
+        "properties": {
+          "approvals": {
+            "type": "object",
+            "properties": {
+              "G9": {
+                "type": "object",
+                "properties": { "applicability": { "const": "applicable" } }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "type": "object",
+        "properties": {
+          "approvals": {
+            "type": "object",
+            "properties": {
+              "G9": {
+                "type": "object",
+                "properties": {
+                  "applicability": { "const": "not-applicable" },
+                  "decision": { "const": "not-decided" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "if": {
+        "type": "object",
+        "properties": {
+          "learningProposals": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "properties": { "sourceType": { "const": "customer-telemetry" } },
+              "required": ["sourceType"]
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "required": ["telemetryReuse"],
+        "properties": {
+          "telemetryReuse": { "type": "object" },
+          "approvals": {
+            "type": "object",
+            "properties": {
+              "G8": {
+                "allOf": [
+                  { "$ref": "#/$defs/gateDisposition" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "applicability": { "const": "applicable" },
+                      "decision": { "const": "approved" },
+                      "evidenceRefs": { "type": "array", "minItems": 1 }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "type": "object",
+        "properties": {
+          "approvals": {
+            "type": "object",
+            "properties": {
+              "G8": {
+                "type": "object",
+                "properties": {
+                  "applicability": { "const": "not-applicable" },
+                  "decision": { "const": "not-decided" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}

@@ -1,0 +1,46 @@
+@startuml
+skinparam backgroundColor #FCFCFA
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+title UML Sequence — Governed Operational Learning (G8–G9)
+
+actor Engineer
+participant "Evidence Store" as EV
+participant "Data Release\nManifest Service" as DRM
+participant "Human Gate\nService" as Gate
+participant "Learning Proposal\nBuilder" as LP
+actor "Industrial Expert" as Expert
+
+Engineer -> EV: Select evidence and declare sourceType
+
+alt sourceType = customer-telemetry
+  Engineer -> DRM: Define immutable lot, purpose and controls
+  DRM -> Gate: Request G8 customer/data-owner decision
+  Gate --> DRM: Approved, rejected or conditional G8 disposition
+  DRM --> EV: Authorized lot reference and digest
+else sourceType = pilot-testbed-evidence
+  Engineer -> Gate: Record justified G8 not-applicable disposition
+else sourceType = synthetic-evidence
+  Engineer -> Gate: Record justified G8 not-applicable disposition
+end
+
+EV -> LP: Typed evidence references and applicability context
+LP -> LP: Draft falsifiable, reversible update proposal
+LP -> Gate: Request G9 expert disposition
+Gate -> Expert: Evidence, confounders and safety margins
+Expert --> Gate: Approve, reject, condition or request evidence
+Gate --> LP: Attributable G9 disposition
+
+alt G9 approved
+  LP -> Expert: Version new reversible expert baseline
+else rejected or conditional
+  LP -> Expert: Retain baseline and record rationale/actions
+end
+
+note over EV,Expert
+sourceType is closed: customer-telemetry,
+pilot-testbed-evidence or synthetic-evidence.
+Every learning proposal triggers G9;
+only customer telemetry triggers G8.
+end note
+@enduml

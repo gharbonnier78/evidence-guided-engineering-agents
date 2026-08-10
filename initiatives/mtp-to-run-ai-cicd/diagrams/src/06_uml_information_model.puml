@@ -1,0 +1,110 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor #FCFCFA
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam class {
+  BackgroundColor #F6F8FA
+  BorderColor #334155
+  ArrowColor #475569
+}
+title UML Class View — Core Traceability Information Model
+
+class AuthoritativeSource {
+  +id: Identifier
+  +type: SourceType
+  +version: String
+  +digest: Digest
+  +owner: Role
+}
+
+class EngineeringStatement {
+  +id: Identifier
+  +authorityType: StatementType
+  +status: Status
+  +text: Text
+}
+
+class SolutionManifest {
+  +id: Identifier
+  +version: String
+  +status: ManifestStatus
+  +classification: Classification
+}
+
+class BOM {
+  +id: Identifier
+  +bomType: BOMType
+  +version: String
+  +digest: Digest
+}
+
+class GeneratedArtefact {
+  +id: Identifier
+  +type: ArtefactType
+  +generatorVersion: String
+  +digest: Digest
+}
+
+class EvidenceObligation {
+  +id: Identifier
+  +claim: Text
+  +acceptanceRule: Expression
+}
+
+class EvidenceEnvelope {
+  +id: Identifier
+  +observedAt: Timestamp
+  +completeness: Disposition
+  +digest: Digest
+}
+
+class GateDisposition {
+  +gateId: Identifier
+  +applicability: Applicability
+  +decision: GateDecision
+  +rationale: Text
+  +evidenceRefs: Identifier[*]
+  +decidedBy: Role
+  +decidedAt: Timestamp
+}
+
+class Phase0Exit {
+  +baselineRef: Identifier
+  +thresholdsRef: Identifier
+  +budgetRef: Identifier
+  +measurementProtocolRef: Identifier
+  +decision: GateDecision
+}
+
+class DataReleaseManifest {
+  +lotId: Identifier
+  +purpose: Text
+  +retention: Duration
+  +status: ApprovalStatus
+}
+
+class LearningProposal {
+  +id: Identifier
+  +targetRule: Identifier
+  +sourceType: LearningSourceType
+  +evidenceRefs: Identifier[1..*]
+  +status: ReviewStatus
+}
+
+AuthoritativeSource "1" --> "*" EngineeringStatement : supports
+SolutionManifest "1" o-- "*" EngineeringStatement : resolves
+SolutionManifest "1" o-- "1..*" BOM : links
+SolutionManifest "1" o-- "*" EvidenceObligation : requires
+SolutionManifest "1" --> "*" GeneratedArtefact : produces
+GeneratedArtefact "*" --> "*" EvidenceEnvelope : executed as
+EvidenceObligation "1" --> "*" EvidenceEnvelope : satisfied by
+GateDisposition "*" --> "1" SolutionManifest : controls
+GateDisposition "*" --> "*" EvidenceEnvelope : cites
+Phase0Exit "1" --> "1" SolutionManifest : authorizes pilot for
+Phase0Exit "1" --> "1..*" EvidenceEnvelope : cites framing evidence
+DataReleaseManifest "1" --> "1..*" EvidenceEnvelope : authorizes lot from
+LearningProposal "1" --> "1..*" EvidenceEnvelope : justified by
+LearningProposal "1" --> "0..1" DataReleaseManifest : requires for customer telemetry
+GateDisposition "*" --> "0..1" LearningProposal : approves or rejects
+@enduml

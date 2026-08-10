@@ -1,0 +1,54 @@
+@startuml
+skinparam backgroundColor #FCFCFA
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+title UML Sequence — Framing and Evidence-Producing Delivery (G0–G7)
+
+actor Sponsor
+actor Engineer
+participant "MTP-to-Run\nAssistant" as AI
+participant "Human Gate\nService" as Gate
+participant "CI/CD" as CI
+participant Testbed as TB
+participant "OTEL / Evidence" as EV
+participant "Test and Release\nAuthorities" as TA
+
+Sponsor -> Gate: G0 mandate, sources and authority
+Gate --> Sponsor: Auditable G0 disposition
+Engineer -> AI: Classify selected inputs and assumptions
+Engineer -> Gate: Request G1 input-fitness review
+Gate --> Engineer: Auditable G1 disposition
+Engineer -> Gate: Submit baseline, thresholds, budget and protocol
+Sponsor -> Gate: Decide P0 phase exit
+Gate --> Engineer: P0 proceed, narrow or stop
+Engineer -> AI: Request manifest and BOM alternatives
+AI --> Engineer: Candidate, trade-offs and evidence obligations
+Engineer -> Gate: Request G2 architecture/BOM review
+Gate --> Engineer: Auditable G2 disposition
+Engineer -> AI: Request IaC, tests and documentation drafts
+AI --> Engineer: Pull request with provenance
+Engineer -> CI: Submit reviewed candidate
+CI -> CI: Schema, lint, unit, policy and plan checks
+CI -> Gate: Request G3 IaC-quality disposition
+Gate --> CI: G3 conditions or rejection
+CI -> CI: SBOM, secret, licence and vulnerability checks
+CI -> Gate: Request independent G4 cyber disposition
+Gate --> CI: G4 conditions or rejection
+CI -> TB: Apply candidate in isolated testbed
+CI -> TB: Execute health, performance, resilience and rollback
+TB -> EV: Traces, logs, metrics, events and observations
+CI -> Gate: Request G5 execution disposition
+Gate --> CI: G5 credibility and representativity decision
+EV -> EV: Validate evidence-envelope completeness
+EV -> Gate: Request G6 evidence disposition
+Gate --> TA: Evidence package, G6 decision and gaps
+TA -> TA: Assess residual risk and uncertainty
+TA -> Gate: Record G7 GO / CONDITIONAL GO / NO-GO
+Gate --> Sponsor: Attributable delivery decision record
+
+note over Gate,TA
+G3 and G4 remain distinct decisions with different accountable roles.
+No pilot execution starts before P0 approval.
+No production apply is autonomous.
+end note
+@enduml

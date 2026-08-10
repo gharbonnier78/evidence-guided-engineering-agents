@@ -1,0 +1,69 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor #FCFCFA
+skinparam shadowing false
+skinparam defaultFontName DejaVu Sans
+skinparam componentStyle rectangle
+title UML Component View — Logical MTP-to-Run Architecture
+
+package "Authoritative Engineering Sources" #EEF4FA {
+  [Requirements / Decisions] as REQ
+  [MTP & Evidence Strategy] as MTP
+  [Architecture Repository] as ARCH
+  [Expert Sizer / Matcher] as SIZER
+}
+
+package "MTP-to-Run Intelligence Layer" #E9F5ED {
+  [Source Adapters] as ADAPT
+  [Semantic Classifier & Trace Graph] as TRACE
+  [BOM / Sizing Resolver] as BOM
+  [Solution Manifest Registry] as MANIFEST
+  [AI Proposal Services] as AI
+  [Policy & Human Gate Service] as GATES
+}
+
+package "Delivery and Evidence" #FFF5E6 {
+  [IaC & Test Generators] as GEN
+  [CI/CD Control Plane] as CICD
+  [Testbed / Runtime] as RUN
+  [OTEL Evidence Backbone] as OTEL
+  [Evidence & Decision Repository] as EVID
+  [Documentation Renderer] as DOC
+}
+
+package "Governed Learning" #F3ECFA {
+  [Data Release Manifest] as DRM
+  [Learning Proposal Queue] as LEARN
+}
+
+REQ --> ADAPT
+MTP --> ADAPT
+ARCH --> ADAPT
+SIZER --> ADAPT
+ADAPT --> TRACE
+TRACE --> BOM
+SIZER --> BOM
+BOM --> MANIFEST
+AI --> TRACE : proposes
+AI --> GEN : generates drafts
+MANIFEST --> GEN
+GATES --> MANIFEST : dispositions
+GEN --> CICD
+GATES --> CICD : authorize
+CICD --> RUN
+RUN --> OTEL
+CICD --> OTEL
+OTEL --> EVID
+MANIFEST --> EVID
+EVID --> DOC
+OTEL --> DRM : candidate lot
+GATES --> DRM : G8
+DRM --> LEARN
+LEARN --> SIZER : approved G9 update only
+
+note bottom of AI
+No autonomous authority.
+Sources, prompts, models and outputs
+remain attributable and reviewable.
+end note
+@enduml

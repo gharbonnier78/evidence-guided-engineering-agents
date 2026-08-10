@@ -1,0 +1,152 @@
+apiVersion: engineering-governance.example/v0alpha1
+kind: GateCatalogue
+metadata:
+  id: mtp-to-run-pilot-gates
+  version: 0.2.0
+  status: discussion-draft
+
+dispositionContract:
+  applicability:
+    - applicable
+    - not-applicable
+    - pending
+  decision:
+    - approved
+    - rejected
+    - conditional
+    - not-decided
+  requiredFields:
+    - applicability
+    - decision
+    - rationale
+    - evidenceRefs
+    - decidedBy
+    - decidedAt
+  invariants:
+    - Every gate G0-G9 has an explicit disposition.
+    - G0-G7 are always applicable; G8 and G9 have conditional applicability.
+    - A not-applicable disposition requires a non-empty rationale.
+    - An approved, rejected or conditional decision identifies the human decision-maker and timestamp.
+    - Evidence references are immutable identifiers or digests, not unstructured assertions.
+
+phaseMilestones:
+  - id: P0
+    name: Phase-0 exit
+    purpose: Authorize or reject transition from the two-week framing phase to the bounded pilot.
+    accountableRole: initiative-sponsor
+    requiredEvidence:
+      - Measured baseline for the selected workflow and use case.
+      - Quantified success, guardrail and STOP/NARROW thresholds.
+      - Maximum effort or budget envelope and named owners.
+      - Approved measurement protocol, authorized corpus and data boundary.
+      - Final pilot plan, risk register and explicit proceed, narrow or stop recommendation.
+    rule: Pilot execution cannot start until P0 is applicable and approved.
+
+learningSourceTypes:
+  - customer-telemetry
+  - pilot-testbed-evidence
+  - synthetic-evidence
+
+learningInvariants:
+  - Every learning proposal declares exactly one learningSourceType from the closed catalogue.
+  - customer-telemetry makes G8 applicable and requires an approved immutable Data Release Manifest.
+  - pilot-testbed-evidence and synthetic-evidence do not by themselves trigger G8.
+  - Every learning proposal makes G9 applicable, whatever its source type.
+  - G9 approval changes only a versioned and reversible expert baseline; it never performs silent learning.
+
+gates:
+  - id: G0
+    name: Mandate and authoritative sources
+    defaultApplicability: applicable
+    accountableRole: initiative-sponsor
+    criteria:
+      - Scope and non-scope are approved.
+      - Authoritative source owners are identified.
+      - Data access and processing are authorized.
+      - Escalation and stop authority are explicit.
+
+  - id: G1
+    name: Input fitness and semantic classification
+    defaultApplicability: applicable
+    accountableRole: test-and-architecture
+    criteria:
+      - Requirements, recommendations, decisions and assumptions are distinguished.
+      - Applicability conditions are explicit.
+      - Missing inputs have an owner and disposition.
+
+  - id: G2
+    name: BOM and architecture review
+    defaultApplicability: applicable
+    accountableRole: architecture-and-industrial-expert
+    criteria:
+      - BOM alternatives reference approved rules and sources.
+      - Trade-offs and uncertainty are visible.
+      - Compatibility and obsolescence checks are complete.
+
+  - id: G3
+    name: IaC quality and plan
+    defaultApplicability: applicable
+    accountableRole: platform-devops
+    criteria:
+      - Generated code has provenance and review ownership.
+      - Schema, lint, unit and policy checks pass.
+      - Plan contains no unreviewed destructive change.
+      - Rollback and evidence capture are defined.
+
+  - id: G4
+    name: Cybersecurity and supply chain
+    defaultApplicability: applicable
+    accountableRole: cybersecurity
+    criteria:
+      - Secrets are not present in generated artefacts or recordings.
+      - SBOM and vulnerability disposition are available.
+      - Licence, signature and source controls pass.
+
+  - id: G5
+    name: Testbed execution
+    defaultApplicability: applicable
+    accountableRole: integration-and-test
+    criteria:
+      - Environment fitness and representativity limits are recorded.
+      - Deployment and rollback results are available.
+      - Required functional, performance and resilience checks ran.
+
+  - id: G6
+    name: Evidence completeness
+    defaultApplicability: applicable
+    accountableRole: test-authority
+    criteria:
+      - Required evidence envelopes are complete.
+      - OTEL trace topology and provenance checks pass.
+      - Deviations and manual interventions are visible.
+
+  - id: G7
+    name: Release recommendation and accountable decision
+    defaultApplicability: applicable
+    accountableRole: release-authority
+    criteria:
+      - Residual risk and uncertainty are explicit.
+      - GO, CONDITIONAL GO or NO-GO rationale is reviewable.
+      - Accountable human approval is recorded.
+
+  - id: G8
+    name: Operational telemetry release
+    defaultApplicability: not-applicable
+    trigger: A learning proposal declares learningSourceType customer-telemetry.
+    accountableRole: customer-authorized-role-and-internal-data-owner
+    criteria:
+      - Exact data lot and purpose are identified by an immutable Data Release Manifest.
+      - Contract, confidentiality and data classification checks pass.
+      - Aggregation, retention, access and deletion controls are defined.
+      - Lot-level approval is recorded and referenced by the gate disposition.
+
+  - id: G9
+    name: Expert learning update
+    defaultApplicability: not-applicable
+    trigger: Any learning proposal is created, irrespective of learningSourceType.
+    accountableRole: industrial-expert-owner
+    criteria:
+      - Evidence source type, applicability and sufficiency have been reviewed.
+      - Confounders, safety margins and affected products are assessed.
+      - Change, rejection or further experiment is recorded.
+      - Any accepted update is versioned and reversible.

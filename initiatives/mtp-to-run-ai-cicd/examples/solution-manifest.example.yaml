@@ -1,0 +1,172 @@
+apiVersion: engineering.example/v0alpha1
+kind: SolutionManifest
+metadata:
+  id: matcher-pilot-candidate-a
+  version: 0.1.0
+  classification: private-pilot
+  status: proposed
+
+sources:
+  - id: MTP-DEMO-001
+    type: master-test-plan
+    version: "1.0"
+    digest: sha256:DEMO_REPLACE_ME
+    authoritativeOwner: test-owner
+  - id: SIZER-MATCHER-DEMO
+    type: sizing-model
+    version: 5.2-demo
+    digest: sha256:DEMO_REPLACE_ME
+    authoritativeOwner: industrial-expert-owner
+
+statements:
+  - id: MTP-REC-FAILOVER-001
+    authorityType: mtp-recommendation
+    text: Demonstrate continuity after loss of one compute node.
+    status: accepted-for-pilot
+    sourceRef: MTP-DEMO-001
+  - id: ASM-PEAK-001
+    authorityType: assumption
+    text: Peak load remains below 3500 transactions per second.
+    status: to-be-falsified
+    sourceRef: MTP-DEMO-001
+
+workload:
+  nominalTransactionsPerSecond: 2000
+  peakTransactionsPerSecond: 3500
+  workloadProfile: demo-synthetic-v1
+
+resilience:
+  toleratedComputeNodeFailures: 1
+  recoveryTimeObjectiveSeconds: 60
+
+sizing:
+  modelRef: SIZER-MATCHER-DEMO
+  applicability:
+    workloadProfile: demo-synthetic-v1
+  alternatives:
+    - id: candidate-a
+      description: Balanced performance and resilience candidate
+      status: proposed
+    - id: candidate-b
+      description: Lower-cost candidate requiring additional peak-load evidence
+      status: proposed
+
+bomLinks:
+  - type: hw-bom
+    ref: bom/hw/candidate-a.cdx.json
+  - type: sbom
+    ref: bom/software/candidate-a.cdx.json
+  - type: evidence-bom
+    ref: evidence/candidate-a.cdx.json
+
+evidenceRequired:
+  - id: E-PERF-NOMINAL
+    claim: Sustain nominal load within approved latency thresholds.
+  - id: E-PERF-PEAK
+    claim: Sustain declared peak profile for the defined duration.
+  - id: E-FAILOVER-NODE
+    claim: Recover from loss of one compute node within the RTO.
+  - id: E-TRACE-COMPLETE
+    claim: Required OTEL trace topology and provenance are complete.
+
+deployment:
+  environment: isolated-testbed
+  autonomousProductionApply: false
+  generatedIaC:
+    language: to-be-selected-during-framing
+    sourceDigest: null
+
+phase0Exit:
+  applicability: pending
+  decision: not-decided
+  rationale: Baseline, thresholds, budget and protocol must be produced during the two-week framing phase.
+  evidenceRefs: []
+  decidedBy: null
+  decidedAt: null
+  baselineRef: null
+  thresholdsRef: null
+  budgetRef: null
+  measurementProtocolRef: null
+
+learningProposals:
+  - id: LP-DEMO-001
+    targetRule: SIZER-MATCHER-DEMO:R-27
+    sourceType: synthetic-evidence
+    evidenceRefs:
+      - evidence/synthetic-backtest-001.json
+    status: proposed
+
+approvals:
+  G0:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting mandate and source authorization.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G1:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting semantic and input-fitness review.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G2:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting BOM and architecture review.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G3:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting IaC quality evidence.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G4:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting cybersecurity and supply-chain review.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G5:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting authorized testbed execution.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G6:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting evidence-completeness assessment.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G7:
+    applicability: applicable
+    decision: not-decided
+    rationale: Awaiting accountable release recommendation.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G8:
+    applicability: not-applicable
+    decision: not-decided
+    rationale: The example uses synthetic evidence and proposes no customer telemetry reuse.
+    evidenceRefs: []
+    decidedBy: null
+    decidedAt: null
+  G9:
+    applicability: applicable
+    decision: not-decided
+    rationale: A synthetic-evidence learning proposal exists and requires expert disposition.
+    evidenceRefs:
+      - evidence/synthetic-backtest-001.json
+    decidedBy: null
+    decidedAt: null
+
+telemetryReuse: null

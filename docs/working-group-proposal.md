@@ -11,6 +11,8 @@ Begin with two demonstrators:
 1. **BOM-to-reviewed-IaC:** translate a synthetic MTP recommendation into a traceable BOM and a reviewed infrastructure-as-code draft.
 2. **Invention-to-expert-review:** identify a candidate technical contribution in synthetic project artifacts, produce a preliminary falsification report, and stop at a consent gate before any external transmission.
 
+The first demonstrator is developed as the [`MTP-to-Run initiative`](../initiatives/mtp-to-run-ai-cicd/). Its longer 90-day plan is a candidate follow-on pilot, not an automatic extension of this eight-week board experiment.
+
 ## Participation model
 
 Use an open call for small teams. A candidate team may bring its own methods and tools, provided it accepts the common evidence contract, safety boundaries, evaluation protocol, and publication rules. If several teams participate, compare them on the same cases before selecting or combining approaches.
@@ -50,4 +52,3 @@ Possible contributors include systems engineering, integration, industrializatio
 ## Expected decision after the pilot
 
 The working group does not seek approval for an enterprise platform. It seeks evidence for one of four decisions: **stop**, **revise**, **repeat on a new case**, or **prepare a controlled operational pilot**.
-
