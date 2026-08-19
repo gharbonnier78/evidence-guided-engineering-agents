@@ -49,6 +49,7 @@ These are roles in a decision process, not artificial executives. They may retri
 - [`docs/vision.md`](docs/vision.md) — scope, principles, and non-goals.
 - [`docs/extended-agent-board.md`](docs/extended-agent-board.md) — persona board and collaboration model.
 - [`docs/working-group-proposal.md`](docs/working-group-proposal.md) — bounded pilot proposal.
+- [`docs/research-notes/agent-identity-delegation-governance.md`](docs/research-notes/agent-identity-delegation-governance.md) — research note on agent identity, delegated authority, continuous assurance, NIST, Socure, Verana/2060, and governance from engineering to citizen/government ecosystems.
 - [`governance/`](governance/) — agent contract, evidence model, authorization, and decision gates.
 - [`personas/`](personas/) — domain persona specifications.
 - [`shared/schemas/`](shared/schemas/) — machine-readable evidence, opportunity, and decision records.
