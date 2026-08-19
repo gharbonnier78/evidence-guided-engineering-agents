@@ -2,121 +2,165 @@
 
 **Research note — 19 August 2026**
 
-## Source that triggered this note
+> Status: exploratory architecture synthesis. This note distinguishes public evidence, emerging standards, vendor capabilities, and research propositions. It does not claim that any single vendor or protocol solves the end-to-end problem.
 
-Ashok Singal, *From verifying humans to AI agents: Socure prepares for the next identity challenge*, Biometric Update, 16 August 2026.
+## Trigger source
+
+Ashok Singal, **“From verifying humans to AI agents: Socure prepares for the next identity challenge”**, *Biometric Update*, 16 August 2026.
 
 Source: https://www.biometricupdate.com/202608/from-verifying-humans-to-ai-agents-socure-prepares-for-the-next-identity-challenge
 
 ## Executive summary
 
-The important shift described by Socure is not merely that fraudsters can use AI agents. It is that identity infrastructure can no longer assume that the actor performing a transaction is a human. A legitimate AI agent may act for a person, employee, company or public body. Trust therefore becomes a chain: establish the principal, establish that authority was delegated, identify the agent, bind the delegation to a purpose and scope, authorize each consequential operation, and preserve evidence that the observed action remained within that authority.
-
-A useful conceptual chain is:
+The key shift is not merely that fraudsters can use AI. Legitimate AI agents will increasingly act for people, employees, companies and public bodies. Identity infrastructure must therefore move from a mostly human-centric question — *who are you?* — to an attributable authority chain:
 
 ```text
-Principal -> Delegation -> Agent identity -> Mission / purpose
-          -> Authorization -> Tool / service -> Effect -> Evidence
+Principal -> Delegation -> Agent/runtime identity -> Mission/purpose
+          -> Authorization -> Tool/service -> Effect -> Evidence
 ```
 
-A robust architecture should keep separate **identity, authentication, delegation, authorization, mission/purpose, observed action/effect and evidence**. Collapsing them into one unexplained “agent trust score” risks hiding the exact failure mode that governance needs to reconstruct.
+That chain is necessary but not sufficient. An authenticated and authorized agent may still be unreliable, drifted, poorly grounded, or coupled to a changed downstream system. A second **Assurance Plane** is therefore required:
 
-## What Socure actually says — and what it does not yet prove
+```text
+Relevance -> Validity -> Reliability -> Robustness/stability
+          -> Evidence quality -> Monitoring -> Change control
+          -> Requalification -> Recovery
+```
 
-Socure's CPO Chung-Man Tam frames AI agents as a structural shift. Biometric Update reports Socure's view that services will increasingly need to verify the person or organization, the delegated authority, the agent identity and scope, and whether each action is still inside that scope. The article also highlights lifecycle questions such as revocation, continuing authority and agents invoking other agents.
+The working proposition is:
 
-This should not be confused with a claim that Socure has already implemented the whole trust chain. Its current RiskOS MCP Server is an authenticated developer integration surface for documentation, OpenAPI schemas, account configuration, workflow metadata and webhook management. Socure's own documentation states that the MCP Server does **not** execute RiskOS transactions or evaluations. Authenticated MCP access is therefore not, by itself, proof of agent identity, delegated authority, purpose, or authorization for a consequential business action.
+> **Trustworthy agent action = Attributable Authority AND Continuously Qualified Assurance.**
 
-## Cross-check with emerging standards and adjacent work
+Trust should not be granted once. It should be continuously re-earned against versioned evidence and operating conditions.
 
-### NIST NCCoE — software and AI agent identity and authorization
+## Who is NIST and why is it relevant?
 
-NIST's 2026 NCCoE concept work explicitly addresses identification, authorization, auditing and non-repudiation for software and AI agents. The motivating scenario is an agent moving beyond generated text to actions such as deploying code to production. This independently supports Socure's framing that agent identity and authority are becoming infrastructure problems rather than application-specific features.
+The **National Institute of Standards and Technology (NIST)** is a U.S. federal agency within the Department of Commerce. It is not an AI or identity vendor. NIST develops measurement science, technical guidance, test methods, standards foundations, interoperability practices and reference resources used by government and industry.
 
-- https://www.nccoe.nist.gov/projects/software-and-ai-agent-identity-and-authorization
-- https://csrc.nist.gov/pubs/other/2026/02/05/accelerating-the-adoption-of-software-and-ai-agent/ipd
+Its AI work is relevant in three complementary ways:
 
-### IETF / OAuth — task-bound and multi-hop delegation
+1. **AI Risk Management Framework (AI RMF).** NIST organizes AI risk management around Govern, Map, Measure and Manage. Trustworthiness is explicitly multi-dimensional: valid and reliable, safe, secure and resilient, accountable and transparent, explainable and interpretable, privacy-enhanced, and fair with harmful bias managed.
+2. **Lifecycle reliability and drift.** NIST explicitly treats reliability as performance over time under defined conditions, and recommends ongoing testing, monitoring, drift detection, incident response, change management and decommissioning where risk exceeds tolerance.
+3. **Agent-specific work in 2026.** The NCCoE concept project on *Software and AI Agent Identity and Authorization* explores standards-based identification, management and authorization of software agents, including agents that can take consequential actions such as deploying code. NIST’s separate *Building Evaluation Probes into Agentic AI* project examines evidence-grounding quality with machine-readable probes for faithfulness, completeness and sufficiency.
 
-Several 2026 Internet-Drafts explore ways to bind authorization to agent identity, task context, operational constraints and delegation chains. They are drafts, not settled standards, but they show where the interoperability problem is moving.
+Key public references:
+
+- AI RMF: https://www.nist.gov/itl/ai-risk-management-framework
+- Trustworthiness characteristics: https://airc.nist.gov/airmf-resources/airmf/3-sec-characteristics/
+- Playbook — Measure: https://airc.nist.gov/airmf-resources/playbook/measure/
+- Playbook — Manage: https://airc.nist.gov/airmf-resources/playbook/manage/
+- NCCoE agent identity/authorization: https://www.nccoe.nist.gov/projects/software-and-ai-agent-identity-and-authorization
+- Agentic AI evaluation probes: https://www.nist.gov/programs-projects/building-evaluation-probes-agentic-ai
+
+NIST does **not** “guarantee” trustworthiness. Its contribution is a measurement, governance and lifecycle framework for building justified confidence and managing residual risk.
+
+## Who is Socure and what is its business?
+
+**Socure, Inc.** is a commercial U.S. identity and risk technology company. Its business covers digital identity verification, fraud prevention, KYC/KYB, compliance and sanctions screening, authentication, device/behavior intelligence and risk decisioning. Socure markets to financial services, fintech, government, gaming, marketplaces, healthcare, telecom and e-commerce, and states that it serves more than 3,000 customers.
+
+Its platform **RiskOS** is positioned as an AI-native identity/fraud/risk/compliance decisioning and orchestration layer. It combines Socure models and identity intelligence with configurable workflows and external data/integration sources.
+
+Relevant public references:
+
+- Company/business: https://www.socure.com/company
+- RiskOS: https://www.socure.com/solutions/riskos
+- RiskOS documentation: https://help.socure.com/riskos/docs/socure-platform
+
+Socure is important here for two reasons. First, the Biometric Update article is an industrial signal that a major identity-risk vendor sees **legitimate agent identity and delegated authority** as the next identity challenge. Second, RiskOS already exposes concrete lifecycle practices relevant to assurance:
+
+- workflow major/minor versioning and version history;
+- frozen published/live workflows and explicit restore/duplicate processes;
+- model-version visibility;
+- Active / Challenger / Latest model comparison, including shadow mode;
+- API version pinning to avoid unexpected behavioral changes;
+- audit logs recording what changed, who changed it and when.
+
+References:
+
+- Workflow lifecycle/versioning: https://help.socure.com/riskos/docs/manage-workflow-lifecycle
+- Model Active/Challenger/Latest: https://help.socure.com/riskos/docs/case-review-process
+- API version pinning: https://help.socure.com/riskos/reference/postevaluation
+- Audit logs: https://help.socure.com/riskos/docs/use-audit-logs
+
+### Important limitation
+
+Socure’s current MCP Server connects AI development tools to RiskOS documentation, workflows and API schemas. Socure’s documentation states that this MCP surface does **not** execute RiskOS transactions or evaluations.
+
+Therefore:
+
+> **Authenticated MCP access is not, by itself, verified delegated authority for a consequential action.**
+
+A key may authenticate access to a service boundary without proving the principal, delegated mission, runtime instance, exact allowed operation, or resulting effect.
+
+## Cross-check with adjacent standards and work
+
+### IETF / OAuth
+
+Several 2026 Internet-Drafts explore agent authentication, task-bound authorization, operation authorization, delegation chains and agent grants. These are drafts rather than settled standards, but they show a clear direction toward contextual, attenuated, multi-hop authorization.
 
 - https://datatracker.ietf.org/doc/html/draft-klrc-aiagent-auth-02
 - https://datatracker.ietf.org/doc/draft-aap-oauth-profile/
-- https://www.ietf.org/archive/id/draft-liu-agent-operation-authorization-02.html
-- https://www.ietf.org/archive/id/draft-liu-ai-agent-authorization-integration-00.html
-- https://datatracker.ietf.org/doc/draft-mishra-oauth-agent-grants/
 
-### OpenID Foundation / AuthZEN — authorization at the tool call
+### OpenID AuthZEN
 
-The OpenID Foundation's 2026 AuthZEN work is particularly relevant because it targets the policy decision point rather than trying to turn identity into a single trust score. COAZ maps operations such as MCP tool calls to an authorization decision: may this agent, acting for this user, call this tool with these arguments? AARP addresses prerequisites such as human approval, delegated authority or attestation before policy can permit the action.
+AuthZEN is relevant because it externalizes the policy decision instead of reducing trust to a score: may this agent, acting for this principal, invoke this tool with these arguments, under this context and prerequisite evidence?
 
 - https://openid.net/authzen-at-identiverse-2026-authorization-in-the-agent-era/
-- https://openid.net/openid-foundation-advances-authorization-for-the-agent-era-with-new-authzen-working-group-drafts/
-- https://openid.net/getting-cozy-with-coaz-securing-apis-and-ai-agents-with-standardized-authorization/
 
-### Verifiable Trust / Verana / 2060 — a complementary VC-based perspective
+### Verifiable Trust / Verana / Fabrice Rochette / 2060
 
-A second perspective comes from the **Verifiable Trust** and **Verifiable Public Registry** work stewarded by the Verana Foundation. Fabrice Rochette is an editor of Verana specifications and is Co-Founder and CEO of **2060 OÜ**. The Verifiable Trust model uses resolvable DIDs, Verifiable Credentials, governed trust registries and DIDComm; a Verifiable Service can advertise MCP or A2A endpoints after a verify-first trust bootstrap.
+A complementary approach comes from the **Verifiable Trust** specification stewarded by the Verana Foundation. The public specification uses resolvable DIDs, Verifiable Credentials, Verifiable Public Registries and trust resolution to establish a verify-first Internet trust layer. The latest public specification identifies **Fabrice Rochette (The Verana Foundation)** as editor.
 
 - Specification: https://verana-labs.github.io/verifiable-trust-spec/
 - GitHub: https://github.com/verana-labs/verifiable-trust-spec
 - Foundation: https://veranafoundation.org/
+
+Public 2060 material identifies Fabrice Rochette as CEO and describes **2060** as an independent research and engineering company, a founding member of the Verana Foundation and the developer of **Hologram**, a commercial product line for verifiable AI-agent trust infrastructure.
+
 - 2060: https://2060.io/
-- 2060 projects / Hologram: https://2060.io/projects
+- Hologram/projects: https://2060.io/projects
 
-2060's Hologram work takes the idea toward deployable AI agents: credential-based authentication, role- and purpose-based access control, MCP connectivity and approval workflows. This is complementary to the OAuth/AuthZEN family rather than necessarily a replacement: VC/DID approaches can establish portable claims and governance context, while policy engines can decide whether a concrete operation is permitted now.
+The VC/DID/Verana perspective can complement OAuth/AuthZEN rather than replace it: credentials can establish portable attestations and governance context; a policy-decision layer can still decide whether a concrete operation is allowed **now**.
 
-### Workload identity — SPIFFE
+### Runtime/workload identity
 
-SPIFFE is useful as a reminder that an agent is also a running workload. Portable cryptographic workload identity can anchor the runtime instance independently of the human or organizational principal. A complete design may therefore need both **principal/delegation identity** and **workload/runtime identity**.
+A logical agent persona and the exact executing workload are different security objects. SPIFFE is a useful adjacent reference for portable workload identity:
 
 - https://spiffe.io/docs/latest/spiffe-specs/spiffe/
 
-## Architectural synthesis
+## Architectural synthesis: Authority Plane x Assurance Plane
 
-A minimal evidence-bearing action record could contain:
+### Authority Plane
 
-```text
-principal_id
-agent_class
-agent_instance_id
-agent_provenance
-mission_id
+Keep distinct:
 
-delegation_id
-delegation_chain
-scope
-purpose
-constraints
-valid_from
-valid_until
+- **Identity** — who/what is the actor?
+- **Authentication** — how is that identity demonstrated now?
+- **Delegation** — what authority was transferred, by whom, with what attenuation and expiry?
+- **Mission/purpose** — why is the agent acting?
+- **Authorization** — may this exact action occur now?
+- **Observed effect** — what actually happened?
+- **Evidence** — what proves the chain afterwards?
 
-tool_id
-resource_id
-requested_action
-executed_action
-policy_decision
-human_approval_ref
+### Assurance Plane
 
-input_digest
-output_digest
-effect
-timestamp
-trace_id
-evidence_refs
-```
+The authorization decision should also depend on whether the agent remains qualified under current conditions:
 
-The design principle is:
+- **Relevance** — does the agent still solve the current task and stakeholder need?
+- **Validity** — is the intended use still satisfied?
+- **Reliability** — does it perform as required over time under defined conditions?
+- **Robustness/stability** — does behavior remain acceptable under perturbation and integration variability?
+- **Evidence quality** — are sources faithful, complete, sufficient, traceable and versioned?
+- **Security/resilience** — can dependencies withstand misuse, compromise or partial failure?
+- **Change integrity** — are material changes detected?
+- **Requalification** — do changes trigger proportionate retest/reapproval?
+- **Recovery** — can the organization stop, roll back, contain and explain failure?
 
-> **No consequential agent action without attributable authority and reproducible evidence.**
-
-This is intentionally stronger than “log the agent.” The evidence should support a later statement such as: *this identified runtime, acting for this principal under this bounded delegation, performed this operation against this resource, under this policy decision, and produced this observable effect.*
+A model version alone is insufficient. The effective execution envelope may depend on model, prompt/policy, retrieval corpus, embeddings/indexes, MCP/A2A tools, API/schema versions, workflow/rule versions, authorization policies, environment and downstream-system contracts.
 
 ## AI-assisted engineering governance
 
-This trust chain is directly relevant to AI-assisted engineering. An agent that reads documentation and proposes a change has a different authority class from an agent that creates code, modifies infrastructure, transmits information, merges a pull request or deploys to production.
-
-The existing `evidence-guided-engineering-agents` reference architecture already separates action classes and requires human authority for consequential actions. Its current principles include permission inheritance, human authority and replayability. Agent identity and delegation make those governance principles enforceable across tools rather than remaining only behavioral instructions.
+This trust architecture is directly relevant to AI-assisted engineering. An agent that reads a specification is not in the same authority class as an agent that creates code, modifies infrastructure, transmits information, merges a change or deploys to production.
 
 ```text
 Accountable owner
@@ -125,85 +169,87 @@ Accountable owner
   -> identified agent/runtime
   -> bounded tool capability
   -> policy decision / human gate
-  -> engineering action
-  -> test and operational evidence
-  -> decision record and replay
+  -> engineering effect
+  -> test + operational evidence
+  -> decision record + replay
 ```
 
-This applies to requirements analysis, architecture, code generation, BOM/IaC preparation, test design, CI/CD, release preparation, configuration changes, observability analysis and incident response. The key question is no longer only *“did the AI produce a good answer?”* but also *“was this agent authorized to make this type of change, using these sources, for this purpose, and can the decision be replayed?”*
+The key question is no longer only *“did the AI produce a good answer?”* but also:
 
-Related repositories:
+> *Was this agent authorized to make this type of change, using these sources, for this purpose, under still-valid operating conditions, and can the resulting decision/effect be replayed?*
+
+Related public repositories:
 
 - https://github.com/gharbonnier78/evidence-guided-engineering-agents
 - https://github.com/gharbonnier78/quality-intelligence-systems-governance
 - https://github.com/gharbonnier78/scientific-research-harness
 
-## Beyond enterprise: a society-wide governance perspective
+## Beyond enterprise: individual, enterprise, government and inter-government governance
 
-The same primitives can appear at several scales, although the governance rules must differ by domain.
+The same trust primitives can appear at several scales, although the legal and institutional rules differ.
 
-| Scale | Example delegation | Additional governance concern |
+| Scale | Example | Additional governance concerns |
 |---|---|---|
-| Individual / citizen | personal agent books travel, pays an invoice, submits a form | informed consent, privacy, revocation, liability, accessibility |
-| Enterprise-wide | agent reads repositories, prepares changes, buys services, operates workflows | segregation of duties, purpose limitation, audit, approval, IP/confidentiality |
-| Public administration | agent assists a civil servant, handles a benefit case, prepares a decision | administrative law, due process, explainability, records retention, equality |
-| Government-wide | agents coordinate across ministries or sovereign systems | legal mandate, national security, sovereignty, cross-domain trust |
-| Inter-governmental | agents exchange credentials, permits, customs or treaty-related data | federation, jurisdiction, mutual recognition, diplomatic accountability |
+| Individual / citizen | personal agent books travel, pays invoices, files forms | consent, privacy, revocation, liability, spending limits, accessibility |
+| Enterprise-wide | agents read repositories, prepare changes, buy services, operate workflows | segregation of duties, purpose limitation, audit, IP/confidentiality, continuity |
+| Public administration | agent assists civil servant or prepares a citizen case | due process, legal basis, equal treatment, appeal, records retention |
+| Government-wide | agents coordinate across ministries / sovereign systems | mandate, sovereignty, classified information, national security |
+| Inter-governmental | agents exchange credentials, permits, customs/treaty data | federation, jurisdiction, mutual recognition, trust anchors, dispute resolution |
 
-The EU Digital Identity Wallet work is relevant to the citizen and cross-border identity side because it establishes common issuer-wallet-relying-party trust infrastructure and interoperable digital credentials across Member States. It does not itself solve AI-agent delegation, but it illustrates how shared trust frameworks can move from one organization to a multi-state ecosystem.
+EU Digital Identity Wallet work is useful as an adjacent precedent for cross-organization and cross-border trust infrastructure, although it does not itself solve AI-agent delegation:
 
 - https://digital-strategy.ec.europa.eu/en/policies/eudi-wallet-toolbox
 
-The European Commission's 2026 work on GenAI adoption in public administrations also makes the organizational governance problem concrete: public bodies are already using GenAI for drafting, knowledge management, information processing and service delivery while facing governance, data-protection, readiness and sovereignty constraints.
+## Testing the trust chain
 
-- https://interoperable-europe.ec.europa.eu/collection/public-sector-tech-watch/document/adoption-generative-ai-eu-public-administrations-exploring-individual-behaviours-and-organisational
+Nominal functional coverage is not enough. The system should be challenged with meaningful authority and assurance mutants.
 
-## Testing the authority chain: from coverage to meaningful fault detection
-
-Traditional functional coverage is insufficient for this problem. A system may execute every expected flow while remaining unable to reject a materially wrong delegation.
-
-Examples of authorization/delegation mutants:
+Examples:
 
 ```text
 valid:      Principal P -> Agent A -> read repository X
 mutant 1:   Principal P -> Agent B -> read repository X
-mutant 2:   Principal P -> Agent A -> write repository X
-mutant 3:   Principal P -> Agent A -> read repository Y
+mutant 2:   Agent A -> write repository X
+mutant 3:   Agent A -> read repository Y
 mutant 4:   Agent A acts after delegation expiry
-mutant 5:   Agent A delegates to B although sub-delegation is forbidden
-mutant 6:   A -> B -> C exceeds maximum delegation depth
-mutant 7:   another principal reuses A's token or session
-mutant 8:   same permission is used for a different declared purpose
-mutant 9:   action is allowed but required human approval evidence is absent
+mutant 5:   forbidden sub-delegation A -> B
+mutant 6:   another principal reuses A's session
+mutant 7:   required human approval evidence is absent
+mutant 8:   model changes without requalification
+mutant 9:   retrieval corpus changes without evidence digest change
+mutant 10:  tool/API semantics change behind the same endpoint
+mutant 11:  evidence supports only part of the claim
+mutant 12:  rollback path is unavailable
 ```
 
-A research metric worth testing — **not an established standard** — is an *Agent Delegation Mutation Score* (ADMS):
+A research metric worth testing — **not an established standard** — is an **Agent Delegation Mutation Score (ADMS)**:
 
 ```text
-ADMS = detected/rejected security-significant delegation and authority mutants
-       ----------------------------------------------------------------------
-       injected security-significant delegation and authority mutants
+ADMS = detected/rejected security-significant authority mutants
+       ---------------------------------------------------------
+       injected security-significant authority mutants
 ```
 
-It should not be used as one opaque score. Mutants should be stratified by consequence, likelihood, attack surface and governance class. For rare but critical failures, a probability-of-detection style treatment may be more useful than raw mutation coverage.
+This must not become an opaque KPI. Mutants should be stratified by consequence, likelihood, attack surface and governance class; rare critical failures may justify a probability-of-detection treatment instead.
 
 ## Perspectives and challenges
 
-1. **Identity is necessary but insufficient.** A cryptographically identified agent can still exceed its mandate.
-2. **Delegation must be attenuating.** A sub-agent should normally receive no more authority than the delegator possessed and should inherit purpose and expiry constraints.
-3. **Purpose must become machine-checkable.** Scopes such as `repo:write` are often too broad for autonomous systems; purpose, resource, operation and context need to travel together.
-4. **Runtime identity matters.** “Agent A” as a logical persona and the exact running instance executing a tool call are different security objects.
-5. **Revocation must work at machine speed.** Long-running and multi-hop chains create propagation and stale-authority risks.
-6. **Evidence must survive organizational boundaries.** A trustworthy record needs common semantics, integrity protection, timestamping and privacy controls.
-7. **Human approval cannot be ceremonial.** The system should prove which decision required approval, what the approver saw and which exact action was subsequently executed.
-8. **Privacy and minimization remain first-class.** Verifiability must not become universal surveillance. Selective disclosure and minimum necessary context are important design constraints.
-9. **Federation is harder than enterprise IAM.** Enterprise, citizen, government and inter-government trust involve different legal roots of authority and mutual-recognition rules.
-10. **Standards are moving quickly and remain incomplete.** Many agent-specific IETF documents cited here are Internet-Drafts; interoperability and conformance evidence matter more than choosing a fashionable protocol early.
-11. **Governance is a layer above MCP/A2A.** Interoperability protocols can transport calls and messages; membership, policy, dissent, escalation, accountability and replay still require a governance architecture.
-12. **AI-assisted governance must remain governable.** Agents may help discover evidence, test policy or prepare decisions, but the mechanism that governs them must itself be inspectable, testable and change-controlled.
+1. Identity is necessary but insufficient.
+2. Delegation should attenuate rather than expand authority.
+3. Purpose should become machine-checkable.
+4. Logical agent identity and runtime identity should be bound but kept distinct.
+5. Trustworthiness is temporal; evidence can expire after material change.
+6. Evidence presence is not evidence sufficiency.
+7. Human approval must be bound to the exact decision and effect, not used ceremonially.
+8. Controlled evolution must include tools, policies, corpora, schemas and downstream systems, not only models.
+9. Requalification must be proportionate: neither “retest everything” nor silent inheritance is sustainable.
+10. Verifiability must not become surveillance; minimization and selective disclosure remain first-class.
+11. Federation across enterprises, citizens and governments is harder than enterprise IAM because roots of authority differ.
+12. MCP/A2A are interoperability layers, not complete governance architectures.
+13. AI-assisted governance must itself remain inspectable, versioned, testable and reversible.
 
 ## Working research proposition
 
-> A portable, purpose-bound and evidence-bearing delegation layer can allow AI agents to act across tools and organizational boundaries while preserving human or institutional accountability — but only if identity, authorization, delegation, runtime provenance, policy decision and observed effect remain separable and independently testable.
+> A portable, purpose-bound, evidence-bearing delegation layer can allow AI agents to act across tools and organizational boundaries while preserving human or institutional accountability — but only if identity, delegation, runtime provenance, authorization, evidence quality, operating conditions and observed effect remain separable and independently testable.
 
-This proposition is useful across biometric/digital identity, AI-assisted engineering, enterprise automation, citizen services and government interoperability. It should be treated as a research and architecture hypothesis, not as evidence that one current vendor or protocol has already solved the end-to-end problem.
+The accompanying arXiv-style PDF expands this note into a structured literature/architecture synthesis suitable as a LinkedIn attachment.
