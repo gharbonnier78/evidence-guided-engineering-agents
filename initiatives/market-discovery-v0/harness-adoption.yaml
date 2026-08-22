@@ -1,0 +1,76 @@
+schema_version: "0.1"
+
+harness:
+  repository: gharbonnier78/scientific-research-harness
+  ref: "1cead5808c126fd38e7505c27502fb3e7671c69a"
+  entrypoint: HARNESS.md
+
+consumer:
+  repository: "gharbonnier78/evidence-guided-engineering-agents"
+  project_id: "market-discovery-v0"
+  instruction_entrypoints:
+    - initiatives/market-discovery-v0/README.md
+    - initiatives/market-discovery-v0/PLAN.md
+
+authority:
+  sources:
+    - id: "market-public-evidence"
+      reference: "Public/open company, procurement, transition/acquisition and technical sources explicitly cited per candidate record"
+      role: "Support observed market signals and company facts; never authorize inferred pain, urgency, budget or willingness-to-pay by themselves."
+    - id: "real-interviews"
+      reference: "Human discovery interviews and explicitly recorded commercial interactions"
+      role: "Primary evidence for buyer language, urgency, constraints, willingness to engage and willingness to pay."
+    - id: "executed-pilots"
+      reference: "Executed bounded engagements with recorded inputs, outputs, effort, direct costs and client outcome"
+      role: "Primary evidence for delivery economics, repeatability and value claims."
+  domain_experts: []
+  prohibited_substitution:
+    - "The harness and LLM explanations do not replace authoritative sources or expert judgment."
+    - "Public signals do not substitute for direct evidence of customer pain, budget, authority or willingness-to-pay."
+    - "AI-generated market narratives do not count as validation evidence."
+
+artifacts:
+  claims:
+    - initiatives/market-discovery-v0/PLAN.md
+  evidence:
+    - initiatives/market-discovery-v0/EXISTING_CONTEXT.md
+    - "future candidate records, interview records, proposals and pilot evidence"
+  scientific_gates:
+    - "G0 Baseline recorded"
+    - "G1 Candidate protocol usable"
+    - "G2 Signal quality demonstrated"
+    - "G3 Interview evidence obtained"
+    - "G4 Willingness-to-pay tested"
+    - "G5 Delivery economics observed"
+    - "G6 Reuse decision justified"
+  chronicle: "future append-only Market Discovery decision log"
+  pedagogy:
+    - initiatives/market-discovery-v0/PEDAGOGY_AND_LEAN.md
+  handoff: "PR #6 and follow-up issue #7 until a dedicated handoff artifact is created"
+
+execution:
+  environment_lock: null
+  replay_commands: []
+  randomness:
+    status: "not_applicable"
+    root_entropy_policy: null
+    lineage_artifact: null
+  concurrency:
+    status: "not_applicable"
+    reference_path: null
+    equivalence_evidence: null
+
+local_extensions:
+  - id: "market-lean-ablation-loop"
+    description: "Treat market-discovery mechanisms, tools, scores, data sources, persona roles and workflow steps as removable hypotheses. Prefer the minimum sufficient mechanism; compare against simpler baselines and remove components that do not change a decision, conversion quality, delivery quality, cycle time, risk or economics."
+  - id: "human-understanding-obligation"
+    description: "Before promoting a market or business conclusion to canonical status, at least one accountable human must be able to explain the evidence, limitations, provenance, alternative explanations, economic implications and next decision in plain language."
+  - id: "commercial-evidence-separation"
+    description: "Separate observed public facts, interviewer/client statements, analyst inference, commercial hypothesis and measured economic outcome."
+
+deviations: []
+
+adoption:
+  adopted_at: "2026-08-22"
+  adopted_by: "ChatGPT with explicit user instruction"
+  notes: "Market Discovery v0 applies the scientific, review and pedagogical harness to market/business experiments. Domain-specific commercial thresholds remain local. Reusable methodological lessons should be proposed upstream to scientific-research-harness rather than silently generalized here."
